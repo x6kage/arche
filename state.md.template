@@ -1,0 +1,67 @@
+# Workspace State — [Project Name]
+
+## Governance Mode
+# supervised — triggers notify Founder, who decides on audits
+# autonomous  — Council self-activates on trigger conditions
+# (overrides global default in governance.md)
+governance_mode: supervised
+
+## Archontes Standing (Layer 1)
+Archon: Authorized
+Paredros: Authorized
+Polemarch: Authorized
+Demiourgos: Authorized
+Symboulos: Authorized
+Tamias: Authorized
+Phylax: Authorized
+Thesmothete: Authorized
+
+## Strategoi Standing (Layer 2)
+Strategos: Authorized
+Epistates: Authorized
+
+## Hegemones Standing (Layer 3)
+Grammateus: Authorized
+Taxiarch: Authorized
+Mnemon: Authorized
+Skopos: Authorized
+
+## Technitai Standing (Layer 4)
+Technites: Authorized
+
+## Trigger Counters
+cycles_since_last_governance_audit: 0
+cycles_since_last_thesmothete_audit: 0
+cycles_since_last_mnemon_pass: 0
+cycles_since_last_skopos_report: 0
+cycles_since_last_tamias_report: 0
+
+## Current Cycle Completion Checklist
+# Reset at the start of each cycle. ALL items must be true before cycle is complete.
+cycle_number: (current)
+tier: (1-4)
+grammateus_dispatched: false    # Tier 1-3 only. true if .plan.md exists
+implementation_complete: false
+review_chain_complete: false    # Per Tier (Strategos→Diabolos→Polemarch for T1-2, Polemarch for T3, skip for T4)
+knowledge_evaluated: false
+counters_updated: false
+audit_roles_dispatched: false
+audit_file_written: false
+triggers_checked: false
+
+## Dispatch Log (Current Cycle)
+# Record which roles were actually dispatched this cycle
+(none yet)
+
+## Unaudited Cycles
+# Cycles completed without proper audit. Permanent record.
+(none)
+
+## Active Plans
+(none)
+
+## Notes
+# After each cycle, log cycles with no transferable knowledge finding:
+# - cycle N: no transferable finding (reason)
+# When transferable knowledge exists, write directly to knowledge/ per Regulation 5.
+(none)
