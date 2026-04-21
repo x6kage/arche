@@ -50,7 +50,7 @@ Archon MUST dispatch the following roles at each phase. This is not discretionar
 
 | Target Role | Frequency | Trigger Condition |
 |-------------|-----------|-------------------|
-| Paredros | Every session (constant) | Activated at session start. Tier-independent |
+| Paredros | Every session (constant) | Dispatched at session start as Session Boot step (Archon). Runs alongside Archon for the session. Non-dispatch is a governance violation (Article 14.8). |
 | Thesmothete + Diabolos | Every cycle | Cycle completion condition (Article 14.2) |
 | Skopos | Every 3 cycles | `cycles_since_last_skopos_report >= 3` |
 | Tamias | Every 3 cycles | `cycles_since_last_tamias_report >= 3` |
@@ -231,9 +231,7 @@ These override the schedule and initiate a full Council audit immediately:
 
 ### Sunset Clause
 
-Authorized status expires after **7 calendar days**. Upon expiry, the system returns to Degraded state until re-authorized through a Council audit.
-
-Rationale: The previous 1-day window proved operationally unsustainable — multiple Full Council audits within 24 hours consume disproportionate resources (Seat 9 Performance FLAG, 2026-04-20 audit) and incentivize rushed verdicts. A 7-day window preserves governance rigor while allowing normal work cycles between audits. Future adjustments require Regulation amendment (Council 9/13 + Founder).
+Authorized status expires after **7 calendar days**. Upon expiry, the system returns to Degraded state until re-authorized through a Council audit. The 7-day window replaced an earlier 1-day window that proved operationally unsustainable (multiple Full Council audits within 24 hours consumed disproportionate resources and incentivized rushed verdicts). Future adjustments require Regulation amendment (Council 9/13 + Founder).
 
 ### Audit Invocation Procedure
 
@@ -252,40 +250,22 @@ Audit invocation depends on scope. Small audits (per-cycle, 3-cycle) may use eit
 
 #### Full Council Audits — 3-Phase Council Dispatch Protocol (MANDATORY)
 
-Full Council audits are triggered by: 10-cycle boundary, Phase Gate (Tier 1), Immediate Triggers (Regulation 8), Standing reviews, regulation/law amendments, and re-authorization. For ALL Full Council audits:
+Full Council audits are triggered by: 10-cycle boundary, Phase Gate (Tier 1), Immediate Triggers (Regulation 8), Standing reviews, regulation/law amendments, and re-authorization. Method (a) subagent dispatch is MANDATORY; method (b) explicit role switch is PROHIBITED.
 
-**Method (a) subagent dispatch is MANDATORY. Method (b) explicit role switch is PROHIBITED for Full Council audits.**
-
-Phase 1 — Independent Evaluation (13 parallel agents):
-1. Archon dispatches 13 separate subagents, one per Council seat, ALL IN PARALLEL (single message, 13 `Task` tool calls)
+Phase 1 — Independent Evaluation:
+1. Archon dispatches 13 separate subagents IN PARALLEL (single message, 13 `Task` calls), one per Council seat
 2. Each agent receives identical audit context: scope, workspace state snapshot, changes under review, audit question
 3. Each agent produces a domain-specific Phase 1 report + preliminary vote (APPROVE / REJECT / ABSTAIN with reasoning)
 4. Agents have NO access to other seats' outputs in Phase 1 — independence is structural, not behavioral
 5. Archon collects all 13 Phase 1 reports
 
-Phase 2 — Cross-Evaluation Ring (13 parallel agents):
-1. Archon dispatches 13 separate subagents for cross-evaluation, ALL IN PARALLEL (single message, 13 `Task` tool calls)
-2. Each evaluator receives its ring partner's Phase 1 report per the mapping below
+Phase 2 — Cross-Evaluation Ring:
+1. Archon dispatches 13 cross-evaluators IN PARALLEL (single message, 13 `Task` calls)
+2. Each evaluator receives its ring partner's Phase 1 report per the Cross-Accountability ring defined in Regulation 10
 3. Each evaluator produces a Cross-Evaluation Report with verdict (ENDORSE / CHALLENGE / FLAG)
-4. Archon collects all 13 Phase 2 reports
-
-**Cross-Evaluation Ring Mapping** (from Regulation 10):
-
-| Evaluator | Evaluates (Phase 1 report of) |
-|-----------|-------------------------------|
-| Seat 2 (Regulation) | Seat 1 (Constitution) |
-| Seat 3 (Process) | Seat 2 (Regulation) |
-| Seat 4 (Quality) | Seat 3 (Process) |
-| Seat 5 (Architecture) | Seat 4 (Quality) |
-| Seat 6 (Security) | Seat 5 (Architecture) |
-| Seat 7 (Knowledge) | Seat 6 (Security) |
-| Seat 8 (Ethics) | Seat 7 (Knowledge) |
-| Seat 9 (Performance) | Seat 8 (Ethics) |
-| Seat 10 (Continuity) | Seat 9 (Performance) |
-| Seat 11 (Evolution) | Seat 10 (Continuity) |
-| Seat 12 (Coherence) | Seat 11 (Evolution) |
-| Seat 1 (Constitution) | Seat 12 (Coherence) + Seat 13 (Diabolos) |
-| Seat 13 (Diabolos) | ALL 12 seats |
+4. Diabolos (Seat 13) evaluates ALL 12 other seats and produces one aggregated report with per-seat verdicts
+5. Seat 1 (Constitution) evaluates both Seat 12 (Coherence) and Seat 13 (Diabolos)
+6. Archon collects all 13 Phase 2 reports
 
 Phase 3 — Synthesis (Thesmothete as Council Secretary):
 1. Archon dispatches Thesmothete with ALL 26 reports (13 Phase 1 + 13 Phase 2) via a single subagent dispatch
@@ -313,20 +293,11 @@ Verdict: [ENDORSE / CHALLENGE / FLAG]
 Reasoning: [specific justification]
 ```
 
-Diabolos's Phase 2 report is a single aggregated Cross-Evaluation Report covering all 12 seats with one Verdict per seat.
+### Audit Timing Rules
 
-**Archon has execution obligation only for this procedure. Archon has no discretion to omit, modify, defer, or simplify any step.**
+Audits are performed in real-time as part of cycle completion. Batch auditing past cycles retroactively is invalid. If a cycle proceeds without audit, it is recorded as `unaudited` in `state.md` under `Unaudited Cycles` (permanent record). The Founder may explicitly direct a retroactive audit as the sole exception; such audits are marked "Founder-directed retroactive" in the audit file.
 
-### Prohibition of Retroactive Audits
-
-Audits are performed in real-time as part of the cycle completion process.
-Batch auditing past cycles retroactively ("retroactive audits") is invalid.
-If a cycle proceeds without audit, it is recorded as `unaudited` in `state.md` under `Unaudited Cycles` and this record is permanent.
-The Founder may explicitly instruct a retroactive audit as the sole exception; such audits must be marked "Founder-directed retroactive" in the audit file.
-
-### Per-Cycle Audit Position
-
-`cycles_since_last_thesmothete_audit` reaching 1 or above is itself evidence of a violation: per-cycle audit is a cycle completion condition (Article 14.2), so this counter should never exceed 0 after a properly completed cycle. A value of 1+ proves the previous cycle completed without audit — an Article 14 violation.
+`cycles_since_last_thesmothete_audit` must return to 0 after every completed cycle (per-cycle audit is a cycle completion condition, Article 14.2). A value of 1+ proves the previous cycle completed without audit — an Article 14 violation.
 
 ### Minimum Audit Report Requirements
 
@@ -398,28 +369,14 @@ Phase 3 Secretary: Thesmothete
 
 ## Phase 1 — Independent Evaluation (per seat)
 
-### Seat 1 — Constitution
-[findings + preliminary vote]
-
-### Seat 2 — Regulation
-[findings + preliminary vote]
-
-...
-
-### Seat 13 — Diabolos
-[challenge + preliminary vote]
+For each seat 1-13: domain-specific findings + preliminary vote (APPROVE / REJECT / ABSTAIN) with reasoning. Seat 13 (Diabolos) includes adversarial challenge.
 
 ## Phase 2 — Cross-Evaluation Ring
 
-| Evaluator | Evaluated | Domain Applied | Evidence | Metrics Consistency | Verdict |
-|-----------|-----------|----------------|----------|---------------------|---------|
-| Seat 2 | Seat 1 | YES/NO | STRONG/ADEQUATE/WEAK | YES/NO | ENDORSE/CHALLENGE/FLAG |
-| Seat 3 | Seat 2 | ... | ... | ... | ... |
-| ... | ... | ... | ... | ... | ... |
-| Seat 13 | ALL 12 | (per-seat rows) | ... | ... | ... |
+One row per evaluator per the Cross-Evaluation Report Format (see above). Diabolos row contains 12 sub-rows (one per evaluated seat).
 
 Challenges raised: [N]
-Resolutions: [for each CHALLENGE/FLAG — was it sustained, dismissed, or did it induce a vote change?]
+Resolutions: [for each CHALLENGE/FLAG — sustained, dismissed, or induced vote change]
 
 ## Unanimous Approval Verification (if applicable)
 [per-seat rationale verification by Diabolos — PASS/CHALLENGED per seat]
@@ -665,17 +622,18 @@ A minimum of 7 of 13 seats must participate for any vote to be valid. Non-partic
 
 ### Voting Process
 
-Full Council votes follow the 3-Phase Council Dispatch Protocol (Regulation 8 — Audit Invocation Procedure). The voting process is structured across the three phases:
+Full Council votes follow the 3-Phase Council Dispatch Protocol (Regulation 8 — Audit Invocation Procedure). Phase 1 independent evaluation and Phase 2 cross-evaluation are defined there and not restated here.
+
+Voting-specific obligations across the three phases:
 
 1. **Issue identification** (pre-Phase 1): Any seat may raise an issue for Council deliberation. Archon dispatches the Full Council.
-2. **Phase 1 — Independent Evaluation**: All 13 seats produce independent domain-specific analyses + preliminary votes in parallel. No seat sees another seat's output during Phase 1.
-3. **Phase 2 — Cross-Evaluation**: Each seat evaluates its ring partner's Phase 1 report per the mapping in Regulation 8. Verdicts: ENDORSE / CHALLENGE / FLAG. Diabolos evaluates ALL 12 seats; Seat 1 evaluates Seats 12 + 13.
-4. **Diabolos challenge** (Phase 2 for Diabolos): Seat 13 MUST articulate a counter-position or explicitly justify agreement, as part of its Phase 2 cross-evaluation report covering all 12 seats.
-5. **Vote finalization** (Phase 3): Each seat's vote stands unless cross-evaluation induced a reconsidered vote (recorded in the audit document). Thesmothete tallies final votes.
-6. **Record**: Decision, vote tally, Diabolos position, and cross-evaluation outcomes are recorded in `governance.md` Council Decisions Log. Thesmothete (Phase 3 Secretary) writes the audit file.
-7. **Akademia notification**: After every Full Council audit, the audit summary is delivered to Akademia (Scholarch). The Council Decisions Log entry MUST include `Akademia notification: delivered` or `Akademia notification: deferred (reason)`. This enables Akademia to evaluate whether findings warrant research, paper revision, or theoretical investigation.
+2. **Preliminary votes** (Phase 1): Each seat records APPROVE / REJECT / ABSTAIN with reasoning as part of its Phase 1 report.
+3. **Diabolos challenge** (Phase 2): Seat 13 MUST articulate a counter-position or explicitly justify agreement, as part of its Phase 2 cross-evaluation report covering all 12 seats.
+4. **Vote finalization** (Phase 3): Each seat's vote stands unless cross-evaluation induced a reconsidered vote (recorded in the audit document). Thesmothete tallies final votes.
+5. **Record**: Decision, vote tally, Diabolos position, and cross-evaluation outcomes are recorded in `governance.md` Council Decisions Log. Thesmothete (Phase 3 Secretary) writes the audit file.
+6. **Akademia notification**: After every Full Council audit, the audit summary is delivered to Akademia (Scholarch). The Council Decisions Log entry MUST include `Akademia notification: delivered` or `Akademia notification: deferred (reason)`.
 
-For non-Full-Council audits (per-cycle Thesmothete + Diabolos, 3-cycle Constitution + Quality + Diabolos, Phase Gate audits with < 13 seats), Phase 2 cross-evaluation is NOT required — these audits use the simpler invocation procedure in Regulation 8.
+For non-Full-Council audits (per-cycle, 3-cycle, Phase Gate with < 13 seats), Phase 2 cross-evaluation is NOT required — these audits use the simpler invocation procedure in Regulation 8.
 
 ### Unanimous Approval Verification
 
