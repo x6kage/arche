@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Arche Operational Regulations
 
-These are operational rules. Amendments require Archon + relevant Archontes approval, or Council special majority (9/13) + Founder.
+These are operational rules. Amendments require Archon + relevant Archontes approval, or Council special majority (9/13) + Telos.
 
 ## Regulation 1 — Role Detection
 
@@ -50,7 +50,7 @@ Archon MUST dispatch the following roles at each phase. This is not discretionar
 
 | Target Role | Frequency | Trigger Condition |
 |-------------|-----------|-------------------|
-| Paredros | Every session (constant) | Activated at session start. Tier-independent |
+| Paredros | Every session (constant) | Dispatched at session start as Session Boot step (Archon). Runs alongside Archon for the session. Non-dispatch is a governance violation (Article 14.8). |
 | Thesmothete + Diabolos | Every cycle | Cycle completion condition (Article 14.2) |
 | Skopos | Every 3 cycles | `cycles_since_last_skopos_report >= 3` |
 | Tamias | Every 3 cycles | `cycles_since_last_tamias_report >= 3` |
@@ -68,6 +68,17 @@ The 3rd cycle is a **synchronization checkpoint**: Skopos (blind spot detection)
 | Epistates | Multiple plans running in parallel |
 | Taxiarch | Technites encountering difficulty, complex refactoring |
 
+### Total-Society Dispatch Principle (adaptive specialization)
+
+Dispatch is **adaptive specialization, NOT "invoke every role every time."** For any non-trivial task, the orchestrating agent's dispatch **candidate set** is the whole society — every specialist role, **including Akademia** — and the orchestrator MUST route each facet of the task to its correct specialist rather than concentrating a multi-disciplinary task on a single implementation role (or on itself).
+
+- **Candidate set ≠ invocation set.** "Whole society as candidate set" is a *consideration floor* (what the orchestrator must consider routing to), NOT a mandate to invoke every role on every task. Invoking all roles indiscriminately violates Article 7 / Regulation 4 economy and is wrong. The obligation is that the candidate set is complete and that each facet is matched to the right specialist.
+- **Akademia is a first-class dispatch candidate**, not an afterthought, for any task with a research, literature, synthesis, novel-thinking, or framework-evolution dimension.
+- **Concentration anti-pattern (forbidden):** dumping authoring, proofreading, consistency-checking, strategy, or research work onto the implementation role because it is convenient. Implementation applies what specialists define; it does not substitute for them.
+- **Enforcement:** under-mobilization (skipping the correct specialist, or omitting Akademia on a research-grade task) is a **dispatch deficiency** surfaced by Paredros / Process — the orchestrator holds the dispatch *obligation*, not discretion to under-mobilize (extends the Article 14.8 obligation-not-discretion logic from audit dispatch to generation/specialist dispatch). It is a flaggable pattern, not a per-task enforcement violation.
+
+(Adopted 2026-06-13 by Council vote 12/13 APPROVE — autonomous mode, Telos approval withheld by Telos's own direction per Article 11.x. Record: `~/.arche/audits/_framework/council/2026-06-13T2345_council-vote_total-society-dispatch.md`. Origin: a workspace's R9, proven in that program.)
+
 ### Tier 0 — Framework Evolution Authorization
 
 Tier 0 is structurally independent from general authorization. Even in **Authorized** state, Tier 0 work is blocked unless a separate Tier 0 authorization has been granted.
@@ -82,15 +93,15 @@ Tier 0 is structurally independent from general authorization. Even in **Authori
 
 **Tier 0 authorization requires**:
 - Specific proposal describing the change and its justification
-- **Supervised mode**: Council special majority (9/13) + Founder approval to open a Tier 0 session
-- **Autonomous mode**: Council unanimous (13/13) to open a Tier 0 session (unanimity substitutes for Founder oversight)
+- **Supervised mode**: Council special majority (9/13) + Telos approval to open a Tier 0 session
+- **Autonomous mode**: Council unanimous (13/13) to open a Tier 0 session (unanimity substitutes for Telos oversight)
 - Amendment process per Article 9 for law changes, or Archon + relevant Archontes approval for regulation changes
 - Tier 0 authorization expires when the specific proposal is resolved (approved, rejected, or deferred). It is NOT a standing permission
 
 **Tier 0 initiation sources**:
 - Evolution seat (Seat 11) flags framework improvement opportunity
 - Akademia paper recommends structural change
-- Founder direct request
+- Telos direct request
 - Any role flags a structural deficiency (layer-transparent flagging, Article 12)
 
 ## Regulation 3 — Artifact Formats
@@ -122,16 +133,40 @@ Verdict:          APPROVED | REJECTED
 Findings: [specific issues + fix guidance]
 ```
 
-## Regulation 4 — Model Dispatch
+## Regulation 4 — Model & Dispatch Mode
 
-All `Task` subagent dispatches MUST specify `model: "fast"` unless explicitly justified.
+### 4.1 — Model Allocation
 
-| Role | Model |
+The principle: the strongest model is reserved for strategic/governance work (Archon, Council, Akademia, strategy synthesis); execution-level tasks use the **fastest sufficient model** (Article 7 — target 90%+ of token spend on fast models). `Task` subagent dispatches SHOULD request the fast model unless explicitly justified.
+
+| Role | Intended model |
 |------|-------|
 | Archon | default (strongest) |
-| All others | `model: "fast"` |
+| All others | fast (unless justified) |
 
-Violation check: Before calling Task without fast, justify why. If no justification, add `model: "fast"`.
+**Slug-availability clause (environment-dependent).** The *intended* allocation above is expressed via the `model` slug ONLY when a corresponding slug is actually available in the runtime's Task-dispatch allow-list. **Slug availability depends on the IDE / client implementation, not on the model provider** (e.g. some clients accept an explicit model spec — Claude clients can take a JSON model spec — while others expose only a fixed allow-list). The mechanism:
+
+- **When a fast slug IS available** (the IDE/client exposes a generic `fast`/`default` pair, or accepts an explicit model spec): set `model: "<fast-slug>"` on non-Archon dispatches; the fast-default rule applies as written.
+- **When NO fast slug is available** (the IDE/client's Task allow-list does not expose a generic `fast` slug — only specific slugs, or none): **omit the `model` parameter.** An omitted `model` means the subagent **inherits the parent (dispatcher's) model.** This is the correct, compliant behavior — NOT a violation — because the required slug does not exist to set.
+- A workspace running on a strong-model-only / credit-backed posture (recorded in `governance.md` as a Reg 4.1 exception) inherits the strong model by omission; this is the **recorded exception**, not a breach.
+
+**Violation check (revised):** Before calling Task, determine whether a fast slug exists in this runtime/IDE's allow-list. If yes and you dispatch a non-Archon role without it, justify why or add it. If no fast slug exists, omit `model` (parent-inheritance) — and do NOT fabricate a slug that the runtime does not accept. The intent (cheap execution where possible) is honored by slug when the slug exists, and by the environment's available models when it does not.
+
+> Amendment note (2026-06-13): clarified by Archontes decision after a runtime finding — the prior absolute "MUST specify `model: \"fast\"`" was literally unexecutable where no `fast` slug is exposed by the IDE/client. **Slug availability is an IDE/client-implementation property, not a model-provider property** (corrected from an earlier draft that wrongly attributed it to a specific provider). The fast-default *principle* is preserved; the *mechanism* is now slug-availability-aware. Recorded in `governance.md` Corrections Log. Knowledge: see `~/.arche/knowledge/process/model-slug-availability-environment-dependent.md`.
+
+### 4.2 — Mandatory Background Dispatch (Telos directive, 2026-06-12)
+
+All `Task` subagent dispatches MUST run in the background (`run_in_background: true`). This is a **hard requirement** — the orchestrating agent (Archon, or any agent dispatching subagents) MUST NOT block on a foreground subagent.
+
+Rationale (Telos directive): the orchestrator must remain free to multitask, monitor, and course-correct rather than stalling on a single subagent. Foreground (blocking) dispatch is the dispatch-mode equivalent of the Article 14.8 skip/simplify temptation — it collapses the orchestrator into a single-threaded executor and defeats real-time monitoring (Paredros, Article 14.4).
+
+Rules:
+1. Every `Task` dispatch sets `run_in_background: true`. No exceptions for "quick" or "single" subagents.
+2. The orchestrator relies on completion notifications and `AwaitShell`-style polling ONLY when genuinely blocked on a specific subagent's result with no other productive work.
+3. Read-only review/audit subagents (Polemarch, Thesmothete, Diabolos, security-review, bugbot, etc.) are dispatched in the background the same as implementation subagents.
+4. **Verifiable artifact**: the dispatch record in `state.md` `Dispatch Log` notes background mode; a foreground (blocking) dispatch is a Regulation 4 violation recorded at the next per-cycle audit.
+
+Violation check: Before any `Task` call, confirm `run_in_background: true` is set. If not, set it.
 
 ## Regulation 5 — Knowledge Article Format
 
@@ -186,6 +221,8 @@ Governance checks are **cycle-based**, not session-based. An **implementation cy
 | Every 3 cycles | 3 | Constitution + Quality + Diabolos | Law compliance, quality gate, adversarial challenge |
 | Every 10 cycles | 7+ (quorum) | Full Council | Comprehensive governance review |
 
+At every **10-cycle Full Council** audit, Seat 11 (Evolution) MUST file an explicit **stagnation / evolution-trigger finding** (Law Article 0(g)); "no trigger detected" is itself a recorded, falsifiable claim. This rides inside the already-scheduled Full Council (near-zero marginal cost; see UAV-ii cost analysis) and discharges the Article 0(g) standing-cadence duty.
+
 ### Phase Gate Audits
 
 When an **Active Plan** with defined Phases exists in `state.md`, Phase completion triggers an audit **in addition to** the cycle-based schedule above.
@@ -227,13 +264,11 @@ These override the schedule and initiate a full Council audit immediately:
 
 **Autonomous Mode**: Triggers automatically initiate the appropriate audit. Council self-assembles and conducts the audit within the current execution context. **Work is gated** — the agent MUST NOT proceed with the next cycle until the triggered audit is complete. Recognizing a trigger without acting on it is a governance violation (see Article 4).
 
-**Supervised Mode**: Triggers generate a **visible notification** to the Founder describing which thresholds are met. The Founder decides whether to proceed with the audit, defer it, or dismiss it. **Work is gated** — the agent MUST NOT proceed until the Founder responds. Silent recognition without notification is a governance violation.
+**Supervised Mode**: Triggers generate a **visible notification** to Telos describing which thresholds are met. Telos decides whether to proceed with the audit, defer it, or dismiss it. **Work is gated** — the agent MUST NOT proceed until Telos responds. Silent recognition without notification is a governance violation.
 
 ### Sunset Clause
 
-Authorized status expires after **7 calendar days**. Upon expiry, the system returns to Degraded state until re-authorized through a Council audit.
-
-Rationale: The previous 1-day window proved operationally unsustainable — multiple Full Council audits within 24 hours consume disproportionate resources (Seat 9 Performance FLAG, 2026-04-20 audit) and incentivize rushed verdicts. A 7-day window preserves governance rigor while allowing normal work cycles between audits. Future adjustments require Regulation amendment (Council 9/13 + Founder).
+Authorized status expires after **7 calendar days**. Upon expiry, the system returns to Degraded state until re-authorized through a Council audit. The 7-day window replaced an earlier 1-day window that proved operationally unsustainable (multiple Full Council audits within 24 hours consumed disproportionate resources and incentivized rushed verdicts). Future adjustments require Regulation amendment (Council 9/13 + Telos).
 
 ### Audit Invocation Procedure
 
@@ -252,40 +287,24 @@ Audit invocation depends on scope. Small audits (per-cycle, 3-cycle) may use eit
 
 #### Full Council Audits — 3-Phase Council Dispatch Protocol (MANDATORY)
 
-Full Council audits are triggered by: 10-cycle boundary, Phase Gate (Tier 1), Immediate Triggers (Regulation 8), Standing reviews, regulation/law amendments, and re-authorization. For ALL Full Council audits:
+Full Council audits are triggered by: 10-cycle boundary, Phase Gate (Tier 1), Immediate Triggers (Regulation 8), Standing reviews, regulation/law amendments, and re-authorization. Method (a) subagent dispatch is MANDATORY; method (b) explicit role switch is PROHIBITED.
 
-**Method (a) subagent dispatch is MANDATORY. Method (b) explicit role switch is PROHIBITED for Full Council audits.**
-
-Phase 1 — Independent Evaluation (13 parallel agents):
-1. Archon dispatches 13 separate subagents, one per Council seat, ALL IN PARALLEL (single message, 13 `Task` tool calls)
+Phase 1 — Independent Evaluation:
+1. Archon dispatches 13 separate subagents IN PARALLEL (single message, 13 `Task` calls), one per Council seat
 2. Each agent receives identical audit context: scope, workspace state snapshot, changes under review, audit question
 3. Each agent produces a domain-specific Phase 1 report + preliminary vote (APPROVE / REJECT / ABSTAIN with reasoning)
 4. Agents have NO access to other seats' outputs in Phase 1 — independence is structural, not behavioral
 5. Archon collects all 13 Phase 1 reports
 
-Phase 2 — Cross-Evaluation Ring (13 parallel agents):
-1. Archon dispatches 13 separate subagents for cross-evaluation, ALL IN PARALLEL (single message, 13 `Task` tool calls)
-2. Each evaluator receives its ring partner's Phase 1 report per the mapping below
+Phase 2 — Cross-Evaluation Ring:
+1. Archon dispatches 13 cross-evaluators IN PARALLEL (single message, 13 `Task` calls)
+2. Each evaluator receives its ring partner's Phase 1 report per the Cross-Accountability ring defined in Regulation 10
 3. Each evaluator produces a Cross-Evaluation Report with verdict (ENDORSE / CHALLENGE / FLAG)
-4. Archon collects all 13 Phase 2 reports
+4. Diabolos (Seat 13) evaluates ALL 12 other seats and produces one aggregated report with per-seat verdicts
+5. Seat 1 (Constitution) evaluates both Seat 12 (Coherence) and Seat 13 (Diabolos)
+6. Archon collects all 13 Phase 2 reports
 
-**Cross-Evaluation Ring Mapping** (from Regulation 10):
-
-| Evaluator | Evaluates (Phase 1 report of) |
-|-----------|-------------------------------|
-| Seat 2 (Regulation) | Seat 1 (Constitution) |
-| Seat 3 (Process) | Seat 2 (Regulation) |
-| Seat 4 (Quality) | Seat 3 (Process) |
-| Seat 5 (Architecture) | Seat 4 (Quality) |
-| Seat 6 (Security) | Seat 5 (Architecture) |
-| Seat 7 (Knowledge) | Seat 6 (Security) |
-| Seat 8 (Ethics) | Seat 7 (Knowledge) |
-| Seat 9 (Performance) | Seat 8 (Ethics) |
-| Seat 10 (Continuity) | Seat 9 (Performance) |
-| Seat 11 (Evolution) | Seat 10 (Continuity) |
-| Seat 12 (Coherence) | Seat 11 (Evolution) |
-| Seat 1 (Constitution) | Seat 12 (Coherence) + Seat 13 (Diabolos) |
-| Seat 13 (Diabolos) | ALL 12 seats |
+**Phase 2 is NON-WAIVABLE.** Full Council convergence in Phase 1 is NEVER grounds to skip Phase 2 — convergence is precisely when cross-evaluation is most diagnostic (it disambiguates genuine consensus from a shared blind spot / groupthink). A Council vote 2026-06-12 (the framework's first self-flag→Tier-0 amendment, originating from an Archon self-flag at `~/.arche/knowledge/process/phase2-waiver-risk.md`) considered formalizing a conditional Phase-2 waiver and resolved to NO-WAIVER. Reasoning (recorded per Article 14.9): every honestly-specified waiver design converges on a cost ≥ B (no-waiver) — an independent non-capturable grantor (Fork ①), auto-suspend-to-baseline on drift (Fork ②), and full instrumentation with mandatory re-review (Fork ③) together make the waiver fire rarely and reproduce Phase-2 cost on re-review, while adding an adverse-selection attack surface B lacks. A waiver cheaper than B is necessarily under-instrumented (unfalsifiable / dishonest); a honestly-instrumented waiver is not cheaper than B. Under the dispatch model (Archon dispatches all seat subagents), no grant mechanism is fully capture-proof, so the only capture-proof option is to have nothing to grant. **Reconsideration condition**: if a future proposal presents a pre-registered, fully-instrumented pilot dataset demonstrating that the real waiver-rate distribution makes a conditional waiver measurably cheaper than B while passing adversarial verification, the Council may reopen this question.
 
 Phase 3 — Synthesis (Thesmothete as Council Secretary):
 1. Archon dispatches Thesmothete with ALL 26 reports (13 Phase 1 + 13 Phase 2) via a single subagent dispatch
@@ -313,20 +332,11 @@ Verdict: [ENDORSE / CHALLENGE / FLAG]
 Reasoning: [specific justification]
 ```
 
-Diabolos's Phase 2 report is a single aggregated Cross-Evaluation Report covering all 12 seats with one Verdict per seat.
+### Audit Timing Rules
 
-**Archon has execution obligation only for this procedure. Archon has no discretion to omit, modify, defer, or simplify any step.**
+Audits are performed in real-time as part of cycle completion. Batch auditing past cycles retroactively is invalid. If a cycle proceeds without audit, it is recorded as `unaudited` in `state.md` under `Unaudited Cycles` (permanent record). The Telos may explicitly direct a retroactive audit as the sole exception; such audits are marked "Telos-directed retroactive" in the audit file.
 
-### Prohibition of Retroactive Audits
-
-Audits are performed in real-time as part of the cycle completion process.
-Batch auditing past cycles retroactively ("retroactive audits") is invalid.
-If a cycle proceeds without audit, it is recorded as `unaudited` in `state.md` under `Unaudited Cycles` and this record is permanent.
-The Founder may explicitly instruct a retroactive audit as the sole exception; such audits must be marked "Founder-directed retroactive" in the audit file.
-
-### Per-Cycle Audit Position
-
-`cycles_since_last_thesmothete_audit` reaching 1 or above is itself evidence of a violation: per-cycle audit is a cycle completion condition (Article 14.2), so this counter should never exceed 0 after a properly completed cycle. A value of 1+ proves the previous cycle completed without audit — an Article 14 violation.
+`cycles_since_last_thesmothete_audit` must return to 0 after every completed cycle (per-cycle audit is a cycle completion condition, Article 14.2). A value of 1+ proves the previous cycle completed without audit — an Article 14 violation.
 
 ### Minimum Audit Report Requirements
 
@@ -398,28 +408,14 @@ Phase 3 Secretary: Thesmothete
 
 ## Phase 1 — Independent Evaluation (per seat)
 
-### Seat 1 — Constitution
-[findings + preliminary vote]
-
-### Seat 2 — Regulation
-[findings + preliminary vote]
-
-...
-
-### Seat 13 — Diabolos
-[challenge + preliminary vote]
+For each seat 1-13: domain-specific findings + preliminary vote (APPROVE / REJECT / ABSTAIN) with reasoning. Seat 13 (Diabolos) includes adversarial challenge.
 
 ## Phase 2 — Cross-Evaluation Ring
 
-| Evaluator | Evaluated | Domain Applied | Evidence | Metrics Consistency | Verdict |
-|-----------|-----------|----------------|----------|---------------------|---------|
-| Seat 2 | Seat 1 | YES/NO | STRONG/ADEQUATE/WEAK | YES/NO | ENDORSE/CHALLENGE/FLAG |
-| Seat 3 | Seat 2 | ... | ... | ... | ... |
-| ... | ... | ... | ... | ... | ... |
-| Seat 13 | ALL 12 | (per-seat rows) | ... | ... | ... |
+One row per evaluator per the Cross-Evaluation Report Format (see above). Diabolos row contains 12 sub-rows (one per evaluated seat).
 
 Challenges raised: [N]
-Resolutions: [for each CHALLENGE/FLAG — was it sustained, dismissed, or did it induce a vote change?]
+Resolutions: [for each CHALLENGE/FLAG — sustained, dismissed, or induced vote change]
 
 ## Unanimous Approval Verification (if applicable)
 [per-seat rationale verification by Diabolos — PASS/CHALLENGED per seat]
@@ -464,11 +460,11 @@ Degraded mode ensures basic productivity continues while preventing high-risk op
 | Counter increments (cycles_since_*) | Automatic as part of Article 4 cycle completion — Authorized state only |
 | Notes logging (knowledge evaluation) | Automatic as part of Article 4 cycle completion — Authorized state only |
 | Standing changes | Council vote (see Article 12) |
-| Governance mode changes | Founder only |
-| Structural changes (adding/removing fields) | Council quasi-unanimous (12/13) + Founder |
-| governance.md modifications | Council vote + Founder (global law equivalent) |
+| Governance mode changes | Telos only |
+| Structural changes (adding/removing fields) | Council quasi-unanimous (12/13) + Telos |
+| governance.md modifications | Council vote + Telos (global law equivalent) |
 
-In **Degraded or Uninitialized state**, no agent may write to `state.md` or `governance.md` for any reason other than Council-directed corrections after a successful authorization vote. The Council audit itself is read-only; file updates occur only after the Founder confirms the verdict.
+In **Degraded or Uninitialized state**, no agent may write to `state.md` or `governance.md` for any reason other than Council-directed corrections after a successful authorization vote. The Council audit itself is read-only; file updates occur only after Telos confirms the verdict.
 
 ### Emergency State Repair (Deadlock Bypass)
 
@@ -479,9 +475,9 @@ The above Degraded-mode write prohibition, combined with the re-authorization re
 2. `state.md` or `governance.md` contains corruption that blocks a valid re-authorization vote (e.g., pending Council verdicts unrecorded, counter-archive mismatch, unaudited cycles unflagged)
 3. Council vote for re-authorization has failed 2+ consecutive attempts where corruption was cited by ≥3 seats as a REJECT cause
 
-**Founder invocation:**
-1. The Founder explicitly declares "Emergency State Repair" in-session with justification that cites the deadlock conditions above
-2. A Tier 0 session opens under Founder override (Article 11: "The Founder retains override capability at all times")
+**Telos invocation:**
+1. The Telos explicitly declares "Emergency State Repair" in-session with justification that cites the deadlock conditions above
+2. A Tier 0 session opens under Telos override (Article 11: "Telos retains override capability at all times")
 3. `state.md` / `governance.md` may be written ONLY for the following corrections:
    - `Unaudited Cycles` records (Article 14.3 compliance for historical cycles)
    - Standing transitions pending from prior Council verdicts (recording decisions already made, not creating new ones)
@@ -545,12 +541,14 @@ Each role's Standing is determined by measurable quality metrics. These are trac
 |------|-------------|-------------------|
 | Archon | Governance compliance, dispatch success rate, cabinet adherence | Unauthorized solo strategic decisions, repeated governance violations |
 | Paredros | Dispatch verification accuracy, strategic challenge effectiveness, cost issue detection | Consistently failed to detect dispatch violations found by Cross-Session or Council |
-| Polemarch | Rubber-stamp rate (>90% approval = flag), post-approval bug rate, infrastructure reliability | Rubber-stamping OR high post-approval defect rate OR infrastructure failures unaddressed |
+| Polemarch | Rubber-stamp rate (>90% approval = flag — see Rubber-stamp flag note below), post-approval bug rate, infrastructure reliability | Rubber-stamping OR high post-approval defect rate OR infrastructure failures unaddressed |
 | Demiourgos | Product decision impact, user-facing quality | Repeated product misalignment |
 | Symboulos | Strategy recommendation quality | Strategy recommendations consistently off-target |
 | Tamias | Cost forecast accuracy, ROI assessment | Persistent cost overruns undetected |
 | Phylax | Security posture maintenance | Security incident from known vulnerability |
 | Thesmothete | Check precision, audit coverage, process efficiency metrics, compliance assessment accuracy | Systematic process violations undetected OR compliance violations undetected |
+
+**Rubber-stamp flag (all review/approval roles)**: The >90%-approval rubber-stamp flag is NOT Polemarch-specific. It applies to **any role that holds review or approval authority** (e.g. Polemarch, Strategos, Diabolos, and Council seats acting in a review/approval capacity). When a reviewing role's approval rate exceeds 90% over a tracked window, the rate is flagged for scrutiny. A reviewer's APPROVE/ENDORSE artifact MUST contain the **reasoning chain (judgment basis → conclusion)**; an APPROVE/ENDORSE consisting of a bare citation or a conclusion **without a recorded reasoning chain counts as a rubber-stamp** for this metric (R-E). This metric **extends** (does not supersede) the Regulation 12 Unanimous Approval Verification: a flagged role's approvals are examined under the existing Reg 12 UAV evidence standard (rationale specific, references concrete evidence, domain expertise actually applied, reasoning chain recorded). An approval failing this standard is void per Law Article 14.9, treated as an abstention; escalation reuses the existing Reg 12 re-vote path.
 
 ### Strategoi & Hegemones (Layers 2-3)
 
@@ -613,17 +611,31 @@ Seat 13 (Diabolos): evaluates ALL seats; evaluated BY Seat 1
 
 ### Autonomous Operation Cycle
 
-Akademia is an independent institution (Article 10) and operates its own periodic cycle regardless of governance mode. The Scholarch does not wait for external triggers — Akademia self-activates.
+Akademia is an independent institution (Article 10) and operates its own periodic cycle regardless of governance mode. The Scholarch does not wait for external triggers — Akademia self-activates. **It is ALSO trigger-driven, not only cadence-driven** (the trigger gap, diagnosed 2026-06-13: a purely 10-cycle cadence left framework-evolution research dormant across multiple cycles — see Research Initiation triggers below, which fire whenever met, independent of the 10-cycle clock).
 
 | Frequency | Role | Action |
 |-----------|------|--------|
 | Every 10 workspace cycles | Scholar | **Scan**: Survey `knowledge/` for gaps, contradictions, and synthesis opportunities. Check external sources if accessible. Report findings to Scholarch. |
 | Every 10 workspace cycles | Scholarch | **Evaluate**: Review Scholar's scan + current knowledge base state. Decide whether to commission new research, revise existing papers, or stand down (with justification). |
+| Every 10 workspace cycles **or quarterly, whichever is first** | Scholar | **Reference roll** (Law Article 0(c)): refresh the external-research frontier (arXiv + web), emit a dated freshness artifact. Discharges the Article 0(c) literature duty. |
+| **Every Full-Council (10-cycle) audit — framework-evolution research handoff** | Scholarch (receiving Seat-11) | **Evolution-research intake** (Law Article 0(g)): the Seat-11 (Evolution) stagnation/evolution-trigger finding filed at each Full Council is **handed to the Scholarch as a research-initiation signal**. Scholarch evaluates whether it warrants a framework-evolution research program (may decline with justification — Article 10 independence preserved; the finding is an input signal, NOT Council directing research conclusions). |
 | When research is active | Theorist | **Validate**: Cross-reference active theories against newly accumulated evidence. Flag theories whose falsifiable predictions have been tested. |
 | When paper is in progress | Grapheus | **Track**: Assess whether accumulated knowledge has reached sufficient density for formalization into a new paper or paper revision. |
 
+**Trigger-driven activation (closes the trigger gap):** any Research-Initiation trigger below fires Akademia **whenever it is met**, independent of the 10-cycle cadence. The cadence is a *floor* (minimum periodic self-check), not the only activation path. An evolution-relevant signal (Seat-11 finding, a flagged framework deficiency, a Tier-0 proposal needing theoretical backing) activates the Scholarch's evaluation in the cycle it arises — it does not wait for the next 10-cycle boundary.
+
+### Reference Roller (Article 0(c) literature-freshness duty)
+
+Article 0(c) (Perpetual Self-Evolution — Akademia literature duty) binds here. The **reference roller** is the concrete mechanism:
+
+- **Cadence**: every 10 workspace cycles **or** quarterly, whichever comes first. It rides Akademia's existing autonomous Scan where possible (near-zero marginal cost; see UAV-ii cost analysis).
+- **Artifact**: each roll emits a **dated freshness artifact** (e.g. `knowledge/akademia/reference-roll-{YYYY-MM-DD}.md`) listing surveyed sources, what changed at the frontier, and what (if anything) warrants a research-initiation trigger. "No change at the frontier" is itself a recorded, falsifiable claim.
+- **Staleness flag**: an overdue roll (cadence exceeded with no artifact) is a **flaggable staleness finding** surfaced by Seat 7 (Knowledge) and/or Seat 11 (Evolution) — not a per-cycle enforcement violation.
+- **Untrusted input**: external research informs proposals but never auto-adopts into rules; adopted findings route through Mnemon curation (Regulation 6) + Article 5 obligations. Akademia independence (Article 10) is preserved — this is a duty to *ingest and surface*, not Council topic-direction.
+- **Counter**: tracked as `cycles_since_last_reference_roll` in workspace `state.md` (or measured against the quarterly wall-clock, whichever binds first).
+
 When findings warrant framework changes:
-- **Supervised mode**: Akademia reports findings to the Founder, who decides whether to initiate a Tier 0 session
+- **Supervised mode**: Akademia reports findings to Telos, who decides whether to initiate a Tier 0 session
 - **Autonomous mode**: Akademia findings directly trigger Tier 0 proposals (see Regulation 2)
 
 ### Research Initiation
@@ -637,9 +649,11 @@ Research programs are initiated by the Scholarch when any trigger condition is m
 | Contradiction detected | Any agent | Scholarch prioritizes resolution research |
 | Research request | Council / Archontes | Scholarch considers (may decline with justification) |
 | Paper revision needed | New evidence | Scholarch commissions revision of existing paper |
-| Tier 0 proposal requires theoretical backing | Council / Founder | Scholarch commissions research to evaluate the proposal's foundations |
+| Tier 0 proposal requires theoretical backing | Council / Telos | Scholarch commissions research to evaluate the proposal's foundations |
 | Akademia paper recommends structural change | Scholarch | Paper triggers Tier 0 initiation (see Regulation 2) |
 | Periodic scan finds actionable gaps | Scholar (autonomous cycle) | Scholarch evaluates and decides on research priority |
+| **Framework-evolution signal (Article 0(g))** | **Seat-11 (Evolution) stagnation/evolution-trigger finding at each Full Council** | **Scholarch evaluates whether to commission a framework-evolution research program — fires whenever the finding is filed, NOT only on the 10-cycle cadence. Closes the trigger gap (diagnosed 2026-06-13): the Akademia↔Evolution handoff that turns "the framework should evolve here" into actual researched study. May decline with justification (Article 10).** |
+| **Flagged structural deficiency** | **Any role (Article 11.3 layer-transparent flagging)** | **A flagged framework deficiency (a role surfacing "this part of the framework is structurally weak") is a research-initiation signal the Scholarch evaluates — the same path that, this program, surfaced the business-capability and intelligence-function questions.** |
 
 ### Research Phases
 
@@ -665,17 +679,18 @@ A minimum of 7 of 13 seats must participate for any vote to be valid. Non-partic
 
 ### Voting Process
 
-Full Council votes follow the 3-Phase Council Dispatch Protocol (Regulation 8 — Audit Invocation Procedure). The voting process is structured across the three phases:
+Full Council votes follow the 3-Phase Council Dispatch Protocol (Regulation 8 — Audit Invocation Procedure). Phase 1 independent evaluation and Phase 2 cross-evaluation are defined there and not restated here.
+
+Voting-specific obligations across the three phases:
 
 1. **Issue identification** (pre-Phase 1): Any seat may raise an issue for Council deliberation. Archon dispatches the Full Council.
-2. **Phase 1 — Independent Evaluation**: All 13 seats produce independent domain-specific analyses + preliminary votes in parallel. No seat sees another seat's output during Phase 1.
-3. **Phase 2 — Cross-Evaluation**: Each seat evaluates its ring partner's Phase 1 report per the mapping in Regulation 8. Verdicts: ENDORSE / CHALLENGE / FLAG. Diabolos evaluates ALL 12 seats; Seat 1 evaluates Seats 12 + 13.
-4. **Diabolos challenge** (Phase 2 for Diabolos): Seat 13 MUST articulate a counter-position or explicitly justify agreement, as part of its Phase 2 cross-evaluation report covering all 12 seats.
-5. **Vote finalization** (Phase 3): Each seat's vote stands unless cross-evaluation induced a reconsidered vote (recorded in the audit document). Thesmothete tallies final votes.
-6. **Record**: Decision, vote tally, Diabolos position, and cross-evaluation outcomes are recorded in `governance.md` Council Decisions Log. Thesmothete (Phase 3 Secretary) writes the audit file.
-7. **Akademia notification**: After every Full Council audit, the audit summary is delivered to Akademia (Scholarch). The Council Decisions Log entry MUST include `Akademia notification: delivered` or `Akademia notification: deferred (reason)`. This enables Akademia to evaluate whether findings warrant research, paper revision, or theoretical investigation.
+2. **Preliminary votes** (Phase 1): Each seat records APPROVE / REJECT / ABSTAIN with reasoning as part of its Phase 1 report.
+3. **Diabolos challenge** (Phase 2): Seat 13 MUST articulate a counter-position or explicitly justify agreement, as part of its Phase 2 cross-evaluation report covering all 12 seats.
+4. **Vote finalization** (Phase 3): Each seat's vote stands unless cross-evaluation induced a reconsidered vote (recorded in the audit document). Thesmothete tallies final votes.
+5. **Record**: Decision, vote tally, Diabolos position, and cross-evaluation outcomes are recorded in `governance.md` Council Decisions Log. Thesmothete (Phase 3 Secretary) writes the audit file.
+6. **Akademia notification**: After every Full Council audit, the audit summary is delivered to Akademia (Scholarch). The Council Decisions Log entry MUST include `Akademia notification: delivered` or `Akademia notification: deferred (reason)`.
 
-For non-Full-Council audits (per-cycle Thesmothete + Diabolos, 3-cycle Constitution + Quality + Diabolos, Phase Gate audits with < 13 seats), Phase 2 cross-evaluation is NOT required — these audits use the simpler invocation procedure in Regulation 8.
+For non-Full-Council audits (per-cycle, 3-cycle, Phase Gate with < 13 seats), Phase 2 cross-evaluation is NOT required — these audits use the simpler invocation procedure in Regulation 8.
 
 ### Unanimous Approval Verification
 
@@ -743,3 +758,71 @@ All audit results (per-cycle, Phase Gate, and Full Council) MUST be recorded as 
 - Full Council audits: All 13 seats' findings, vote tally, Diabolos position, cumulative metrics, unanimous approval verification (if applicable)
 
 **Retention**: Audit logs are permanent governance artifacts. They may not be deleted or modified after creation (Article 5.3).
+
+## Regulation 13 — Build Quality Gate
+
+Every cycle that produces buildable or compilable work MUST pass a Build Quality Gate before the work is considered complete. This regulation states a **language-agnostic principle**. The concrete enforcement taxonomy (specific warning identifiers, build-config syntax, per-language tier lists) is **workspace law and workspace knowledge**, not global regulation — global law states the principle; workspaces bind it to their toolchain (Article 2 layer separation).
+
+### 13.1 — Gate Condition
+The edited scope MUST build with **0 errors and 0 warnings (0E/0W)**. "Edited scope" means the build targets the agent created or modified this cycle; pre-existing untouched third-party noise outside the edited scope does not block the gate but is governed by 13.2.
+
+### 13.2 — Warning Disposition Tiers
+Every warning is classified into exactly one tier and handled accordingly:
+- **Own-code warnings** (code the workspace authors and maintains): **fix in source.** Suppression is not an acceptable disposition.
+- **Benign third-party noise** (warnings from continuously-merged upstream / vendored source the workspace does not author): **suppress ONLY at the workspace-owned build-configuration boundary, with a recorded justification.** Never edit continuously-merged upstream source to silence it. The suppression AND the reasoning chain establishing why it is benign are recorded; a bare "suppressed" without recorded reasoning is non-compliant.
+- **Bug-bearing warnings** (warnings that may indicate a real defect — e.g. unawaited async, possible null dereference, unintended type coercion, dead/unreachable code): **adjudicate individually.** Never blanket-suppress. Each is fixed or individually justified, and the reasoning behind the adjudication is recorded so the judgment basis persists for future merges and sessions.
+
+### 13.3 — Blanket Suppression Forbidden
+Blanket or class-wide suppression (silencing an entire warning category across the whole project rather than at a justified, scoped boundary) is **forbidden**. Suppression must be narrow, recorded, and justified. The Quality metric of interest is the **count of suppression directives and the quality of their recorded justifications**, not the raw warning count.
+
+### 13.3a — Reasoning Retention (R-E)
+For every tier-b suppression and every tier-c bug-bearing adjudication, the **judgment basis and reasoning chain** (not merely the outcome, not merely a code reference) MUST be recorded in the build-configuration justification and/or the cycle artifact. Rationale: at the next upstream merge or in a future session, the re-validation in 13.4 cannot reconstruct WHY a warning was deemed benign or how a defect was adjudicated unless the reasoning persists. Aligns with Law Article 5.3 (reasoning before conclusion) and 5.1 (reasoning outlives sessions). A suppression or adjudication whose reasoning is not recorded does not satisfy this gate.
+
+### 13.4 — Re-validation at Upstream Merge
+All recorded suppressions are **re-validated at each upstream merge**. A suppression no longer needed after an upstream change MUST be removed (suppression staleness). A merge introducing new bug-bearing warnings re-triggers 13.2 adjudication.
+
+### 13.5 — Workspace Binding (non-global)
+Each workspace binds this principle to its toolchain in **workspace law** (the workspace rules file) and a **versioned workspace knowledge article**: the per-language warning taxonomy (which identifiers are own-code/benign/bug-bearing), the build-configuration suppression mechanism, and any role-specific refinements. The taxonomy lives in versioned knowledge (not hardcoded in regulation) so it does not go stale on toolchain/SDK upgrades; freshness ownership follows Regulation 6 (Mnemon). Workspaces with no build step satisfy this regulation vacuously for non-buildable work.
+
+### 13.6 — Note (R-C / R-D / R-E)
+Audit and Council-log surfaces presented to Telos are bilingual (English + Japanese) per Telos requirement (R-C). Every Council vote or multi-role review concludes with a visible per-role-position summary plus a synthesized conclusion (R-D). The judgment basis and reasoning chain leading to any verdict or suppression/adjudication decision are recorded in the artifact, not just the conclusion (R-E; see 13.3a and Law Article 14.9).
+
+## Regulation 14 — Workspace Law/Regulation Materialization
+
+Per Law Article 2.1, every workspace materializes its tiers as real files. This regulation defines the **procedure** to create them in a new workspace (or to split a legacy freeform workspace-rules file). The procedure is tool-agnostic at the principle level; the concrete scaffold is produced by `setup.sh` and the placement judgment is guided by the `materialize-workspace-law` skill.
+
+### 14.1 — Target topology (per workspace, 3-file model)
+
+```
+<tool>/rules/   (e.g. .cursor/rules/, .claude/rules/)
+├── law.mdc            → SYMLINK → <arche>/rules/law.md          (global; instant propagation)
+├── regulation.mdc     → SYMLINK → <arche>/rules/regulation.md   (global; instant propagation)
+├── workspace-law.mdc        = REAL local file (workspace invariants)
+└── workspace-regulation.mdc = REAL local file (workspace procedures)
+```
+
+Global law/regulation are **symlinks** (never copies — copies cause stale propagation when global amends). Workspace law/regulation are **real per-workspace files** (the point is per-workspace divergence within global bounds). The symlink-vs-realfile distinction self-documents the global-vs-local boundary.
+
+### 14.2 — Placement criteria (what goes where)
+
+For each rule/clause, apply the amendment-authority test:
+- Amending it requires **Telos approval** (an invariant: forbidden dependencies, SDK/runtime mandates, architectural invariants, branch discipline, build-quality bindings) → **`workspace-law.mdc`**.
+- Amending it is a **Polemarch-alone procedure** (build commands, deploy steps, session-boot order, runbook duties, communication tone, file layout) → **`workspace-regulation.mdc`**.
+- Technology-specific topic rule → a **Domain Ordinance** file.
+- Ambiguous → default to `workspace-regulation.mdc` (the less-rigid tier) and leave a `<!-- CLASSIFY: ... -->` marker for human/Council review. Never guess an invariant into law.
+
+### 14.3 — Mandatory file structure
+
+- **`workspace-law.mdc`** MUST open with a `## Global Anchors` section (Article 2.1) naming which global Article/Regulation each invariant specializes; an invariant with no anchor is declared an originating workspace invariant and flagged for Coherence review. Header declares: `Tier: Workspace Law | Amendment: Polemarch + Constitution+Coherence conformance gate + Telos (Law Art 2.1)`.
+- **`workspace-regulation.mdc`** header declares: `Tier: Workspace Regulation | Amendment: Polemarch, audited by Thesmothete`, and a one-line pointer "Invariants live in workspace-law.mdc".
+- Both keep `alwaysApply: true` (or the tool's equivalent always-on flag).
+
+### 14.4 — Materialization procedure (split or scaffold)
+
+1. **Scaffold** (`setup.sh workspace-law`): create the two global symlinks, generate an empty `workspace-law.mdc` (with Global Anchors stub + tier header) and `workspace-regulation.mdc` (with tier header). For a greenfield workspace this is the whole step.
+2. **Split** (legacy freeform file, e.g. `akadaemia.mdc`): a Technites (guided by the `materialize-workspace-law` skill) classifies every section per 14.2, moves invariants to `workspace-law.mdc`, renames/keeps procedures as `workspace-regulation.mdc`, and ensures 100% content conservation (every line lands in exactly one file or carries a CLASSIFY marker). The legacy file MUST NOT survive as a duplicate.
+3. **Reference update**: update all hard references (CLAUDE.md/AGENTS.md boot order, state.md, knowledge indexes) to read `workspace-law.mdc` then `workspace-regulation.mdc`.
+4. **Conformance check (mandatory before completion)**: the Coherence seat runs a contradiction-check across the new `workspace-law.mdc`, `workspace-regulation.mdc`, residual ordinances, and global law/regulation — verifying subordination (no clause contradicts/relaxes global), Global Anchors presence, and no duplicate source of truth. A split without this check is incomplete (Diabolos condition).
+
+### 14.5 — Amendment thereafter
+Per Law Article 2.1: workspace-law amendments require Polemarch + Constitution+Coherence conformance gate + Telos; workspace-regulation amendments require Polemarch, audited by Thesmothete.

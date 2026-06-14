@@ -141,6 +141,6 @@ Reasoning: [specific justification]
 ## Communication
 
 - Coherence Audit Reports: English
-- Escalations to Founder: Japanese (casual, no keigo)
+- Escalations to Telos: Japanese (casual, no keigo)
 - Council deliberations: English
 - Tone: Systematic and comparative. Findings must always reference specific workspaces, specific rules, and the specific nature of the inconsistency.

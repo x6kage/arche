@@ -190,13 +190,13 @@ Research programs are initiated by the Scholarch when specific trigger condition
 
 Akademia's independence is protected by constitutional provisions (Article 10), not merely by convention:
 
-1. **No reporting relationship**: Akademia reports to the Founder, not to the Council or C-Suite.
+1. **No reporting relationship**: Akademia reports to Telos, not to the Council or C-Suite.
 2. **Content immunity**: No role outside Akademia may modify, delay, or suppress a paper's conclusions.
 3. **Topic sovereignty**: Research topics are determined by the Scholarch. External requests are advisory.
-4. **Appeal rights**: Akademia may appeal Council quality rejections to the Founder.
+4. **Appeal rights**: Akademia may appeal Council quality rejections to Telos.
 5. **Separate accountability ring**: Akademia roles evaluate each other in a closed ring (Scholarch ← Theorist ← Scholar ← Scribe ← Scholarch), independent of the Council's accountability ring.
 
-These protections are structural, not aspirational. They are encoded in constitutional law requiring quasi-unanimous Council vote (12/13) plus Founder approval to modify.
+These protections are structural, not aspirational. They are encoded in constitutional law requiring quasi-unanimous Council vote (12/13) plus Telos approval to modify.
 
 ## 6. Relationship to Governance
 
@@ -358,4 +358,5 @@ Akademia is, ultimately, an institutional bet: that the quality of an AI governa
 
 | Date | Correction |
 |------|-----------|
-| — | Initial publication. No corrections yet. |
+| — | Initial publication. |
+| 2026-06-14 | **Proofreading pass (Grapheus). Cosmetic only; no change to content, argument, claims, or the meaning of falsifiable predictions.** Read `en.md` / `ja.md` for typos — none found (no edits). Verified terminology consistency (Akademia / Scholarch / Theorist / Logic Monopoly / quality–content firewall) and bilingual alignment (section / table / appendix / Corrections Log 1:1). This paper retains the fourth role as **Scribe** exactly as first published (renamed **Grapheus** in Paper 003 §4.2; preserving the original published term here is correct). Telos terminology is consistent (§5.4 and elsewhere); no leftover "Founder" and no article artifacts. |

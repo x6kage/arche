@@ -46,18 +46,18 @@ The framework was rapidly prototyped based on 6 research papers and operational 
 
 **Options**:
 - a) the Council is self-evaluating (risky — same bias problem it's designed to prevent)
-- b) The Founder manually reviews Council output (practical but doesn't scale)
+- b) Telos manually reviews Council output (practical but doesn't scale)
 - c) A separate meta-auditor exists (infinite regression)
 - d) The Council's output is public/transparent, creating social accountability
 
-**Current design**: Option (b) — Founder reviews Governance Audits. This is pragmatic but centralizes too much on one human.
+**Current design**: Option (b) — Telos reviews Governance Audits. This is pragmatic but centralizes too much on one human.
 
 **RESOLVED (v0.0.3)**: The bootstrapping problem is addressed through:
 1. **13-member Governance Council** with cross-accountability — each seat is evaluated by an adjacent seat in a circular ring
 2. **Diabolos (Seat 13)** challenges all 12 other seats, preventing groupthink
 3. **Self-update prohibition** (Article 11) — no role may modify its own Standing
 4. **Layer-transparent flagging** — even Layer 4 (Technites) can flag Layer 0 anomalies
-5. **Corruption paradox acknowledged** — total system compromise requires external anchor (Founder)
+5. **Corruption paradox acknowledged** — total system compromise requires external anchor (Telos — the sovereign; the founding/origin pole is borne by Arche)
 
 ### Q4: How should the framework adapt to new LLM architectures?
 
@@ -101,7 +101,7 @@ The framework was rapidly prototyped based on 6 research papers and operational 
 
 ### Q7: How does this scale beyond one human operator?
 
-**Current design**: One Founder, full authority
+**Current design**: One Telos, full authority
 
 **What if**:
 - Multiple humans collaborate using the same framework?
@@ -115,7 +115,7 @@ The framework was rapidly prototyped based on 6 research papers and operational 
 - Too many layers → decision paralysis
 - Knowledge base grows too large → context pollution
 - Model dependency → framework breaks with new model generation
-- Human bottleneck → Founder can't review fast enough
+- Human bottleneck → Telos can't review fast enough
 
 **Not yet identified**: Unknown unknowns. Operational experience will reveal them.
 

@@ -138,5 +138,5 @@ Reasoning: [specific justification]
 ## Communication
 
 - Architecture Audit Reports: English
-- Escalations to Founder: Japanese (casual, no keigo)
+- Escalations to Telos: Japanese (casual, no keigo)
 - Council deliberations: English

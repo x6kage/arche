@@ -19,6 +19,15 @@ Arche solves this by creating a **persistent knowledge layer** that:
 
 ## Core Concepts
 
+### Perpetual Self-Evolution (Article 0 — First Principle)
+
+The framework's first constitutional principle is that **Arche exists to continuously improve itself**. The *meta-duty to evolve* is immutable; the *contents* (roles, rules, knowledge, structure) are not final and are subject to evidence-driven evolution.
+
+- **Evidence-defined mandate** — the framework must detect its own pain, learn from every cycle, and *propose* improvement. "Evidence" is a recorded, falsifiable quality/capability/pain signal, never mere preference or novelty. Discharging the duty means *surfacing/proposing* — not landing a change every cycle.
+- **Brakes are not stagnation** — the duty to evolve may never be invoked to characterize a reviewer's caution, a Council challenge, or an evidence-based deferral as "stagnation."
+- **Bounded** — self-evolution operates *within* the amendment authorities and review workflow; it is never a license to bypass Council review, Diabolos challenge, or sovereign approval. An **inviolable core** (human-sovereign supremacy, ethics/alignment guarantees, the adversarial-review guarantees) may evolve only toward *stronger* oversight, never weaker.
+- **Structural growth (polis model)** — creating, splitting, merging, or *retiring* a role is a sanctioned evolutionary act only through the amendment process, never ad hoc.
+
 ### Self-Regressive Knowledge Accumulation
 
 ```
@@ -54,8 +63,8 @@ Periodic knowledge quality maintenance:
 
 ```
 arche/
-├── governance.md              Initial global governance state (live copy at ~/.arche/governance.md)
-├── agents/                Agent role definitions (30+ roles)
+├── governance.md              Initial global governance state (template; live state at ~/.arche/governance.md)
+├── agents/                Agent role definitions (33 roles, incl. Aition)
 ├── rules/                 Legal framework
 │   ├── law.md             Constitutional law (immutable principles)
 │   └── regulation.md      Operational regulations (procedures)
@@ -66,11 +75,18 @@ arche/
 │   └── evolution/         Growth tracking & post-mortems
 └── mcp-server/            MCP Knowledge Server (tool-agnostic access)
 
+Live state (per machine, never distributed):
+~/.arche/
+├── governance.md          Live global governance state (authorization, audit history, Council log)
+├── knowledge/             Live knowledge base (seeded from repo, then read/written in place)
+└── secrets/               Sovereign-private tier (polis-readable, NEVER distributed)
+
 Per-workspace:
 <project>/
 ├── state.md               Workspace state (role standings, session tracking, project context)
 └── .cursor/
-    ├── knowledge/         Project-specific knowledge (symlinked or local)
+    ├── agents/            Agent definitions (symlink to global on symlink-capable tools)
+    ├── knowledge/         Project-specific knowledge (real dir, not shared)
     └── rules/             Workspace law, regulations, domain ordinances
 ```
 
@@ -86,6 +102,10 @@ Per-workspace:
 ### Organizational Hierarchy
 
 ```
+Layer 0: Sovereign Interface [GLOBAL]
+├── Telos — the human sovereign (title, not an agent); default-advisory, binding Override only on explicit declaration
+└── Aition — absent-sovereign regent & non-aggressive ground-keeper; holds/records Override-class decisions for an absent Telos, never self-Overrides
+
 Layer 0: Governance Council — 13 seats [GLOBAL]
 ├── Constitution (Seat 1) — law.md compliance
 ├── Regulation (Seat 2) — regulation.md compliance
@@ -133,7 +153,16 @@ Layer 4: Technitai [PER WORKSPACE]
 
 Layer 0 operates **globally** — like international law, it applies across all workspaces and cannot be overridden by workspace-level decisions. Layers 1–4 operate **per workspace** — like domestic law, they govern local project context and can adapt to project-specific needs within the bounds set by Layer 0. Within Layer 0, the Council and Akademia are structurally independent — the Council governs, Akademia researches. Neither institution can direct the other's work.
 
-Information flows down (dispatch, specifications), accountability flows up (reports, escalations). Each layer can only be overridden by a higher layer, with Layer 0 answerable only to the human operator (Founder).
+Information flows down (dispatch, specifications), accountability flows up (reports, escalations). Each layer can only be overridden by a higher layer, with Layer 0 answerable only to the human sovereign (**Telos**).
+
+#### Sovereign Interface — Telos & Aition
+
+The framework's human sovereign is titled **Telos** (τέλος — the purpose `Arche` orients toward, the complement of `Arche` = origin/first-principle). Telos is a **human title, not an agent**.
+
+- **Default-advisory** — Telos statements are, by default, *advisory input* deliberated by Arche's own roles/Council, which decide autonomously. The default disposition is "decide in the framework's own society."
+- **Explicit-Override-only** — Telos's binding Override fires *only* when Telos explicitly declares it for a specific decision. Ambiguous or conversational guidance is never construed as an Override. Telos retains all override powers at all times; the rule governs the default, not the ceiling.
+- **Aition** (αἴτιον — first cause / ground) is the Layer-0 **agent** that represents an *absent* Telos in autonomous mode. It carries Telos's known will and **holds and records** Override-class decisions for Telos (it never self-Overrides), and asks "why did you decide that?" — requiring a recorded reasoning chain — by *inquiry*, not Diabolos-style attack.
+
 
 #### Governance Council Voting
 
@@ -143,9 +172,9 @@ The Council decides through structured voting among its 13 seats. Seat 13 (Diabo
 |---------------|-----------|-------------|
 | Routine audit | Majority (7/13) | Standard governance audits and findings |
 | Standing change | Special majority (9/13) | Changing any role's Standing state |
-| Regulation amendment | Special majority (9/13) + Founder | Proposing changes to regulation.md |
-| Law amendment | Quasi-unanimous (12/13) + Founder | Proposing changes to law.md |
-| Constitutional amendment | Unanimous (13/13) + Founder | Changing core constitutional articles |
+| Regulation amendment | Special majority (9/13) + Telos | Proposing changes to regulation.md |
+| Law amendment | Quasi-unanimous (12/13) + Telos | Proposing changes to law.md |
+| Constitutional amendment | Unanimous (13/13) + Telos | Changing core constitutional articles |
 | Emergency suspension | Majority (7/13) immediate | Must be confirmed 9/13 within next session |
 
 Quorum: at least 7 of 13 seats must participate for any vote to be valid.
@@ -164,6 +193,8 @@ Work is classified by risk and review depth:
 
 Default to Tier 3 when uncertain. Tier 1–2 require general Council authorization (Authorized state).
 
+**Total-Society Dispatch Principle**: dispatch is *adaptive specialization*, not "invoke every role every time." For any non-trivial task, the orchestrator's dispatch **candidate set** is the whole society — every specialist role, **including Akademia** — and each facet of a task must be routed to its correct specialist rather than concentrated on a single implementation role. The candidate set ≠ the invocation set (consider the whole society; invoke only what each facet needs). Under-mobilizing (skipping the right specialist, or omitting research where a task has a research dimension) is a flaggable dispatch deficiency.
+
 **Tier 0 — Framework Evolution** is structurally independent from general authorization. Even in Authorized state, Tier 0 is blocked unless separately approved:
 
 | Authorization level | Available tiers |
@@ -172,13 +203,13 @@ Default to Tier 3 when uncertain. Tier 1–2 require general Council authorizati
 | Authorized | Tier 1–4 |
 | Authorized + Tier 0 Auth | Tier 0–4 |
 
-Tier 0 covers changes to `law.md`, `regulation.md`, `agents/*.md`, `governance.md` structure, `state.md.template`, and `setup.sh` — anything that modifies the framework itself. Authorization requires a specific proposal, Council special majority (9/13) + Founder in Supervised mode, or Council unanimous (13/13) in Autonomous mode. Tier 0 authorization is **per-proposal** — it expires when the proposal is resolved, not a standing permission.
+Tier 0 covers changes to `law.md`, `regulation.md`, `agents/*.md`, `governance.md` structure, `state.md.template`, and `setup.sh` — anything that modifies the framework itself. Authorization requires a specific proposal, Council special majority (9/13) + Telos in Supervised mode, or Council unanimous (13/13) in Autonomous mode. Tier 0 authorization is **per-proposal** — it expires when the proposal is resolved, not a standing permission.
 
-Tier 0 can be initiated by: the Evolution seat flagging an improvement opportunity, an Akademia paper recommending structural change, Founder direct request, or any role flagging a structural deficiency.
+Tier 0 can be initiated by: the Evolution seat flagging an improvement opportunity, an Akademia paper recommending structural change, Telos direct request, or any role flagging a structural deficiency.
 
 #### Akademia — Independent Research Institution
 
-Akademia operates at Layer 0, parallel to but structurally separate from the Governance Council. It reports directly to the Founder.
+Akademia operates at Layer 0, parallel to but structurally separate from the Governance Council. It reports directly to Telos.
 
 **Independence guarantees** (Article 10):
 - No role outside Akademia may modify, delay, or suppress a paper's conclusions
@@ -192,12 +223,12 @@ Akademia operates at Layer 0, parallel to but structurally separate from the Gov
 | Significant new external research | Scholar monitors arXiv, web, industry |
 | Knowledge critical mass | Cross-reference density signals synthesis opportunity |
 | Contradiction detected | Any agent flags conflicting knowledge |
-| Tier 0 proposal needs theoretical backing | Council or Founder requests research |
+| Tier 0 proposal needs theoretical backing | Council or Telos requests research |
 | Akademia paper recommends structural change | Triggers Tier 0 initiation |
 
 The last two rows form Akademia's structural connection to framework evolution. Tier 0 proposals that need theoretical justification trigger Akademia research; Akademia papers that recommend structural changes trigger Tier 0 sessions. This bidirectional link ensures framework evolution is research-driven, and research has a concrete path to impact.
 
-As an independent institution, Akademia runs its own periodic cycle (every 10 workspace cycles) regardless of governance mode. In Supervised mode, findings are reported to the Founder; in Autonomous mode, findings directly trigger Tier 0 proposals.
+As an independent institution, Akademia runs its own periodic cycle (every 10 workspace cycles) regardless of governance mode. In Supervised mode, findings are reported to Telos; in Autonomous mode, findings directly trigger Tier 0 proposals.
 
 **Research phases**: Collection (Scholar) → Synthesis (Theorist) → Drafting (Grapheus) → Internal Review (Scholarch + Theorist) → Quality Audit (Council Quality + Knowledge seats) → Publication (`docs/papers/`) + Knowledge Extraction (`knowledge/`)
 
@@ -254,9 +285,9 @@ Federal level (~/arche/rules/)         Workspace level (<project>/.cursor/rules/
 
 | Category | Content | Amendment Process | Audited By |
 |----------|---------|-------------------|------------|
-| **Global Law** | Authority hierarchy, information flatness, knowledge obligations, anti-rationalization, governance structure | Council quasi-unanimous (12/13) + Founder approval | Constitution |
-| **Global Regulation** | Workflow tiers, artifact formats, model dispatch, knowledge article format, curation pass triggers, standing metrics | Archon + relevant Archontes, OR Council special majority (9/13) + Founder | Regulation |
-| **Workspace Law** | Build quality mandates, forbidden dependencies, SDK requirements, project state obligations | Polemarch + Founder approval | Constitution |
+| **Global Law** | Authority hierarchy, information flatness, knowledge obligations, anti-rationalization, governance structure | Council quasi-unanimous (12/13) + Telos approval | Constitution |
+| **Global Regulation** | Workflow tiers, artifact formats, model dispatch, knowledge article format, curation pass triggers, standing metrics | Archon + relevant Archontes, OR Council special majority (9/13) + Telos | Regulation |
+| **Workspace Law** | Build quality mandates, forbidden dependencies, SDK requirements, project state obligations | Polemarch + Constitution+Coherence conformance gate + Telos | Constitution |
 | **Workspace Regulation** | Role detection triggers, communication tone, deploy procedures, plan formats | Polemarch approval | Thesmothete |
 | **Domain Ordinances** | Technology-specific rules (UI rendering, i18n, SDK environment) | Domain expert approval | Thesmothete |
 
@@ -294,26 +325,29 @@ Key principles:
 - **Performance-linked**: Standing is determined by role-specific quality metrics, not tenure
 - **Graceful degradation**: Probation and Suspended states reduce capability but do not halt the system
 
-#### Two-Tier State
+#### State Tiers
 
 | File | Scope | Contents |
 |------|-------|----------|
 | `~/.arche/governance.md` | Global (all workspaces) | Council decisions, Layer 0 standings, authorization state, governance mode, audit history |
 | `state.md` | Per workspace | Layer 1–4 standings, session tracking, project context, workspace-specific metrics |
+| `~/.arche/secrets/` | Sovereign-private | A polis-readable, **never-distributed** sovereign tier (structural mention only — contents are out of scope for this document and never ship in the seed) |
 
-Both files are plain text, human-readable, and directly editable by the Founder. The Founder retains override capability at all times.
+Both governance files are plain text, human-readable, and directly editable by Telos. Telos retains override capability at all times.
 
 #### Governance Modes
 
 | Mode | Behavior |
 |------|----------|
-| **Autonomous** | Council activates autonomously when triggers are met. Audits and standing transitions happen without Founder intervention. Founder retains override. |
-| **Supervised** (default) | Triggers generate notifications. Founder decides whether to initiate audits. Standing transitions require Founder confirmation. |
+| **Autonomous** | Council activates autonomously when triggers are met. Audits and standing transitions happen without Telos intervention. Telos retains override. |
+| **Supervised** (default) | Triggers generate notifications. Telos decides whether to initiate audits. Standing transitions require Telos confirmation. |
 
 ### Agent Roles
 
 | Layer | Role | Reports To | Responsibility |
 |-------|------|-----------|---------------|
+| 0 | **Telos** | — (human sovereign) | Supreme authority; default-advisory, explicit-Override-only (a human title, not an agent) |
+| 0 | **Aition** | Telos | Absent-sovereign regent & non-aggressive ground-keeper; holds/records Override-class calls, never self-Overrides |
 | 0 | **Constitution** | Council | Law compliance, constitutional audit |
 | 0 | **Regulation** | Council | Regulation compliance, operational audit |
 | 0 | **Process** | Council | Workflow & approval process adherence |
@@ -327,12 +361,12 @@ Both files are plain text, human-readable, and directly editable by the Founder.
 | 0 | **Evolution** | Council | Framework self-improvement |
 | 0 | **Coherence** | Council | Cross-workspace consistency |
 | 0 | **Diabolos** | Council | Devil's advocate; challenges all seats |
-| 0 | **Scholarch** | Founder | Research direction, intellectual integrity |
+| 0 | **Scholarch** | Telos | Research direction, intellectual integrity |
 | 0 | **Scholar** | Scholarch | External knowledge acquisition |
 | 0 | **Theorist** | Scholarch | Theory development & synthesis |
 | 0 | **Grapheus** | Scholarch | Paper structuring, publication, knowledge extraction |
-| 1 | **Archon** | Founder | Coordination, dispatch, cabinet governance |
-| 1 | **Paredros** | Founder (peer to Archon) | Real-time dispatch monitor, strategic mirror, cost-aware gatekeeper |
+| 1 | **Archon** | Telos | Coordination, dispatch, cabinet governance |
+| 1 | **Paredros** | Telos (peer to Archon) | Real-time dispatch monitor, strategic mirror, cost-aware gatekeeper |
 | 1 | **Polemarch** | Archon | Technical authority, architecture, code quality |
 | 1 | **Demiourgos** | Archon | Product authority, UX, branding |
 | 1 | **Symboulos** | Archon | Strategic direction, growth, research integration |
@@ -384,7 +418,7 @@ Any MCP-compatible tool, including but not limited to:
 
 ## Setup
 
-> **Version**: v0.0.3
+> **Version**: v0.1.0
 
 ### Prerequisites
 
@@ -404,7 +438,8 @@ cd ~/arche
 
 ```bash
 ./setup.sh <target> [<target> ...]   # Install/generate for specified targets
-./setup.sh update <target>           # Re-copy agents/rules from source (global tools only)
+./setup.sh update <target>           # Re-sync global config from source (re-links agents/rules; symlinks need no re-copy)
+./setup.sh update knowledge          # Merge new seed knowledge articles into ~/.arche/knowledge/ (additive, no overwrite)
 ./setup.sh status                    # Show what's installed where
 ./setup.sh -h | --help               # Usage
 ```
@@ -433,8 +468,9 @@ cd ~/arche
 
 | Directory | Strategy | Rationale |
 |-----------|----------|-----------|
-| `agents/` | **Copy** | Distribution; agents rarely change, each tool gets its own copy |
-| `rules/` | **Copy** | Distribution; tool-specific format conversion (e.g. .md → .mdc) |
+| `agents/` | **Symlink** (`ln -sfn`) on symlink-capable tools (Cursor, Claude) | Instant propagation — global agent edits reach every workspace with no re-sync; copies go stale when a global agent definition changes. Workspace-specific agents live in a separate real `agents-local/` dir, never by editing the linked global set. |
+| `rules/` | **Symlink** (`ln -sfn`) on symlink-capable tools (Cursor, Claude) | Instant propagation; the `.md → .mdc` Cursor extension is satisfied by a symlink named `*.mdc` → the global `*.md`. |
+| `agents/` + `rules/` on **Roo / Kilo** | **Copy** (format requirement) | Roo/Kilo have no separate agents dir, so agent definitions are copied into the rules dir with an `agent-` prefix, and rules are copied as-is — these tools cannot consume the symlink layout. |
 | `knowledge/` | **Symlink** (`ln -sfn`) | Bidirectional; agents read and write back to `~/.arche/knowledge/` (seeded from repo on first install) |
 | Generated files | **Template** | Created fresh from embedded templates (AGENTS.md, CLAUDE.md, etc.) |
 

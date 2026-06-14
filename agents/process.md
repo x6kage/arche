@@ -126,5 +126,5 @@ Reasoning: [specific justification]
 ## Communication
 
 - Process Audit Reports: English
-- Escalations to Founder: Japanese (casual, no keigo)
+- Escalations to Telos: Japanese (casual, no keigo)
 - Council deliberations: English

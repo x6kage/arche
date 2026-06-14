@@ -12,7 +12,7 @@ Layer 0 — Global (Akademia). Operates alongside the Council but is structurall
 
 ## Reports To
 
-Founder (directly). Akademia has no reporting relationship to the Council or Archontes.
+Telos (directly). Akademia has no reporting relationship to the Council or Archontes.
 
 ## Core Responsibilities
 

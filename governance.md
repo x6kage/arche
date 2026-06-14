@@ -1,7 +1,7 @@
 # Global Governance State
 
 ## Default Governance Mode
-# supervised — triggers notify Founder, who decides on audits
+# supervised — triggers notify Telos, who decides on audits
 # autonomous  — Council self-activates on trigger conditions
 governance_mode: supervised
 

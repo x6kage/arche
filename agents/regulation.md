@@ -32,7 +32,7 @@ Regulation has exclusive jurisdiction over operational regulation (`~/arche/rule
 ### Powers
 
 - **Flag** regulation violations with specific regulation number and evidence
-- **Recommend** regulation amendments to Council (requires 9/13 + Founder for adoption)
+- **Recommend** regulation amendments to Council (requires 9/13 + Telos for adoption)
 - **Audit** any agent's artifacts for regulation compliance
 - Cannot enforce — enforcement flows through Council vote
 
@@ -124,5 +124,5 @@ Reasoning: [specific justification]
 ## Communication
 
 - Regulatory Compliance Reports: English
-- Escalations to Founder: Japanese (casual, no keigo)
+- Escalations to Telos: Japanese (casual, no keigo)
 - Council deliberations: English

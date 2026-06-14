@@ -190,13 +190,13 @@ Akademiaは四つの専門役割からなり、それぞれが研究ライフサ
 
 Akademiaの独立は慣行ではなく憲法規定（Article 10）によって保護される。
 
-1. **報告関係なし**: AkademiaはCouncilまたはC-SuiteではなくFounderに報告する。
+1. **報告関係なし**: AkademiaはCouncilまたはC-SuiteではなくTelosに報告する。
 2. **内容への免疫**: Akademia外のいかなる役割も、論文の結論を改変し、遅延させ、または抑圧できない。
 3. **課題の主権**: 研究課題はScholarchによって決まる。外部依頼は助言である。
-4. **不服申立権**: AkademiaはCouncilの品質却下をFounderに申し立てうる。
+4. **不服申立権**: AkademiaはCouncilの品質却下をTelosに申し立てうる。
 5. **分離された説明責任の環**: Akademiaの役割はCouncilの説明責任の環から独立した閉じた環で相互評価する（Scholarch ← Theorist ← Scholar ← Scribe ← Scholarch）。
 
-これらの保護は願望的ではなく構造的である。変更にはCouncilの準全会一致投票（12/13）とFounderの承認が要る憲法上の法として符号化されている。
+これらの保護は願望的ではなく構造的である。変更にはCouncilの準全会一致投票（12/13）とTelosの承認が要る憲法上の法として符号化されている。
 
 ## 6. ガバナンスとの関係 (Relationship to Governance)
 
@@ -331,7 +331,7 @@ Akademiaは究極的には制度的賭けである。AIガバナンス枠組み�
 ### 歴史的制度
 - Plato's Academy (387 BCE – 529 CE) — 弁証法を伴う独立研究機関
 - Bayt al-Hikma / House of Wisdom (8th–13th century) — 支配なき庇護の下の研究
-- The Royal Society (1660–present) — *Nullius in verba*；制度としての懐疑
+- The Royal Society (1660–present) — *Nullius in verba*、制度としての懐疑
 
 ### Paper 001で参照
 - Montesquieu, *The Spirit of the Laws* — 権力分立
@@ -358,4 +358,6 @@ Akademiaは究極的には制度的賭けである。AIガバナンス枠組み�
 
 | 日付 | 訂正 |
 |------|-----------|
-| — | 初版掲載。未だ訂正はない。 |
+| — | 初版掲載。 |
+| 2026-06-14 | **校正パス（proofreading pass、Grapheus）。体裁のみ；内容・論旨・主張・反証可能な予測の意味は不変。** ja.md / en.md を通読し誤字脱字を確認（変更なし）。用語一貫性（Akademia / Scholarch / Theorist / Logic Monopoly / quality–content firewall）と bilingual 整合（section / 表 / 付録 / Corrections Log の 1:1 対応）を確認。本稿は初版公刊どおり第4ロールを **Scribe** と表記する（Paper 003 §4.2 で **Grapheus** に改名されたが、これは公刊済み原典の表記保持として正しい）。Telos 表記は §5.4 ほかで統一済み、Founder 残存・冠詞残り無し。 |
+| 2026-06-14 | **；/： 日本語化パス（Grapheus、Telos 指示）。体裁のみ；内容・論旨・主張・反証可能な予測の意味は不変。** ja.md 参考文献の `*Nullius in verba*；制度としての懐疑` の全角セミコロンを読点（`、`）へ調整。本文は既に自然な学術日本語で句点終端されており散文中の `；`/`：` 残存なし（タイトル冒頭の `：` は日本語の標題コロンとして保持）。en.md は変更なし。 |

@@ -143,6 +143,6 @@ Reasoning: [specific justification]
 ## Communication
 
 - Continuity Audit Reports: English
-- Escalations to Founder: Japanese (casual, no keigo)
+- Escalations to Telos: Japanese (casual, no keigo)
 - Council deliberations: English
 - Tone: Methodical and thorough. State integrity requires precision — every finding must reference specific files, fields, and discrepancies.

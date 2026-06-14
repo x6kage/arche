@@ -53,7 +53,7 @@ We identify 16 recurring patterns across historical governance failures. Each pa
 **Pattern 1: Single Point of Failure Dependency**
 - Historical instances: Pharaonic Egypt, Roman Emperorship, Qin Dynasty (First Emperor)
 - Mechanism: Entire system depends on one individual's competence and presence
-- Arche countermeasure: **Autonomous Mode** — system functions without any single agent (including the Founder). State files ensure continuity.
+- Arche countermeasure: **Autonomous Mode** — system functions without any single agent (including Telos). State files ensure continuity.
 
 **Pattern 2: Guardian Neutralization**
 - Historical instances: Roman Senate's marginalization under the Emperors, Carthaginian Senate
@@ -97,7 +97,7 @@ We identify 16 recurring patterns across historical governance failures. Each pa
 **Pattern 9: Constitutional Crisis**
 - Historical instances: Weimar Republic collapse, Thai cyclical coups, Zimbabwean constitutional erosion
 - Mechanism: The rules themselves become contested; the system cannot resolve disputes within its own framework
-- Arche countermeasure: **Tiered amendment process (Article 9, Article 12)** — constitutional changes require unanimous Council vote (13/13) plus Founder approval. The bar is deliberately high, making casual constitutional erosion structurally difficult.
+- Arche countermeasure: **Tiered amendment process (Article 9, Article 12)** — constitutional changes require unanimous Council vote (13/13) plus Telos approval. The bar is deliberately high, making casual constitutional erosion structurally difficult.
 
 ### 2.4 Contemporary — Information Warfare and Democratic Erosion
 
@@ -203,7 +203,7 @@ graph TD
     end
 
     Council -->|"international law"| WS
-    Founder["Founder"] -.->|"override"| Council
+    Telos["Telos"] -.->|"override"| Council
 ```
 
 The Council consists of 12 domain specialists and 1 adversary:
@@ -232,9 +232,9 @@ Graduated thresholds match decision gravity to required consensus:
 
 - **Routine (7/13)**: Standard audits and operational decisions
 - **Standing changes (9/13)**: Altering any role's authority level
-- **Regulation changes (9/13 + Founder)**: Modifying operational procedures
-- **Law changes (12/13 + Founder)**: Modifying constitutional principles
-- **Constitutional amendments (13/13 + Founder)**: Modifying the governance structure itself
+- **Regulation changes (9/13 + Telos)**: Modifying operational procedures
+- **Law changes (12/13 + Telos)**: Modifying constitutional principles
+- **Constitutional amendments (13/13 + Telos)**: Modifying the governance structure itself
 
 This mirrors real-world constitutional amendment processes (e.g., US requires 2/3 Congress + 3/4 states; Japan requires 2/3 Diet + referendum).
 
@@ -298,20 +298,20 @@ graph TD
         direction TB
         S1["Agent Boot"] --> S2["Read governance.md"]
         S2 --> S3{"Trigger?"}
-        S3 -->|"met"| S4["Notify Founder"]
+        S3 -->|"met"| S4["Notify Telos"]
         S3 -->|"not met"| S5["Normal operations"]
-        S4 --> S6{"Founder decision"}
+        S4 --> S6{"Telos decision"}
         S6 -->|"approve"| S7["Council activates"]
         S6 -->|"defer"| S8["Degraded Mode"]
     end
 
-    Founder["Founder"] -.->|"mode switch"| Autonomous
-    Founder -.->|"participates"| Supervised
+    Telos["Telos"] -.->|"mode switch"| Autonomous
+    Telos -.->|"participates"| Supervised
 ```
 
-**Autonomous Mode**: The Council self-activates when triggers are met, conducts audits, and renders verdicts without human intervention. The Founder retains override capability but does not participate by default.
+**Autonomous Mode**: The Council self-activates when triggers are met, conducts audits, and renders verdicts without human intervention. Telos retains override capability but does not participate by default.
 
-**Supervised Mode** (default): Triggers generate notifications to the Founder, who decides whether to initiate audits. This preserves human control while establishing the infrastructure for autonomy.
+**Supervised Mode** (default): Triggers generate notifications to Telos, who decides whether to initiate audits. This preserves human control while establishing the infrastructure for autonomy.
 
 The mode can be switched at any time through `governance.md`, enabling gradual trust-building from supervised to autonomous operation.
 
@@ -485,9 +485,9 @@ graph TD
     end
 
     subgraph External ["External Anchor"]
-        Founder["Founder"] -->|"plain-text state files"| Read["Human-readable governance.md"]
-        Founder -->|"append-only logs"| Tamper["Tampering detectable"]
-        Founder -->|"override"| Reset["Mode switch / Standing reset"]
+        Telos["Telos"] -->|"plain-text state files"| Read["Human-readable governance.md"]
+        Telos -->|"append-only logs"| Tamper["Tampering detectable"]
+        Telos -->|"override"| Reset["Mode switch / Standing reset"]
     end
 
     Total["Total corruption"] -->|"irresolvable internally"| External
@@ -511,15 +511,15 @@ While total corruption is theoretically irresolvable internally, partial corrupt
 
 ### 8.3 External Anchor
 
-The final safety valve is the Founder (human operator):
+The final safety valve is Telos (human operator):
 
 1. `governance.md` is plain text and human-readable — no encoded or opaque state
 2. Standing Transitions Log is append-only — tampering creates detectable gaps
-3. The Founder can switch governance modes at any time
-4. The Founder can directly set any role's Standing
-5. In the extreme case, the Founder can reinitialize the entire governance state
+3. Telos can switch governance modes at any time
+4. Telos can directly set any role's Standing
+5. In the extreme case, Telos can reinitialize the entire governance state
 
-This is analogous to constitutional provisions for popular revolution — when all institutional mechanisms fail, the sovereign (the people / the Founder) retains ultimate authority.
+This is analogous to constitutional provisions for popular revolution — when all institutional mechanisms fail, the sovereign (the people / Telos) retains ultimate authority.
 
 ## 9. Design Decisions and Rationale
 
@@ -600,7 +600,7 @@ Governance mechanisms consume tokens. The more elaborate the governance, the hig
 
 If all roles in a workspace collectively decide that governance overhead is too high and stop complying, the internal mechanisms degrade. This is the practical manifestation of the corruption paradox.
 
-**Current mitigation**: Founder override + external monitoring (state files are human-readable). Future work may explore automated external monitoring.
+**Current mitigation**: Telos override + external monitoring (state files are human-readable). Future work may explore automated external monitoring.
 
 ### 10.5 Scalability
 
@@ -618,7 +618,7 @@ The Arche governance architecture represents an attempt to solve a fundamental p
 2. **Cooperation is the Nash equilibrium** — Universal Role Standing creates an N-player game where honest behavior is the dominant strategy
 3. **Oversight has independent activation** — governance triggers are embedded in constitutional law, not controlled by the executive
 4. **Degradation is graceful** — governance failure reduces capability rather than halting the system
-5. **External anchoring resolves the corruption paradox** — the Founder provides an escape hatch when internal mechanisms are insufficient
+5. **External anchoring resolves the corruption paradox** — Telos provides an escape hatch when internal mechanisms are insufficient
 
 The system is not provably secure — it cannot be, given the soft constraint environment. But it is structurally resistant to the 16 historical collapse patterns that have destroyed human governance systems for millennia.
 
@@ -652,7 +652,9 @@ The system is not provably secure — it cannot be, given the soft constraint en
 
 | Date | Correction |
 |------|------------|
-| 2026-04-21 | Updated 9 references from `governance-state.md` to `governance.md` to reflect the operational rename of the global authorization state file. The rename was executed on 2026-04-20 as a Regulation 9 Emergency State Repair (Founder override, Article 11) and is unrelated to the paper's conclusions. No reasoning chain, diagram semantic, or falsifiable prediction is altered — only the referent file name is updated. Authorized by Scholarch directive v0.0.4-PR-001-D1. |
+| 2026-04-21 | Updated 9 references from `governance-state.md` to `governance.md` to reflect the operational rename of the global authorization state file. The rename was executed on 2026-04-20 as a Regulation 9 Emergency State Repair (Telos override, Article 11; the sovereign, formerly addressed by the placeholder "Founder") and is unrelated to the paper's conclusions. No reasoning chain, diagram semantic, or falsifiable prediction is altered — only the referent file name is updated. Authorized by Scholarch directive v0.0.4-PR-001-D1. |
+| 2026-06-14 | **Proofreading pass (Grapheus). Cosmetic only; no change to content, argument, claims, or the meaning of falsifiable predictions.** Reviewed `en.md` for typos — none found (no edits). Verified terminology consistency (Telos / external anchor / corruption paradox) and Founder→Telos substitution integrity (body uses Telos throughout; the Corrections Log former-placeholder mention "formerly addressed by the placeholder 'Founder'" is correctly retained as a historical reference; no leftover article artifacts). Companion `ja.md` received a one-line de-stiffening edit (§1.3) with identical meaning. Bilingual note: the §3.2 13-seat detail table (Domain / Historical Parallel), the §4.1 Authorized/Degraded gloss, part of a mermaid subgraph, and some §6/§10 supplementary paragraphs are condensed in `ja.md` and not 1:1 with `en.md` — this is a pre-existing difference from initial publication and is recorded here rather than altered, since adding it would exceed a cosmetic proofreading pass. |
+| 2026-06-14 | **Bilingual 1:1 completion (Grapheus, Telos-directed). No change to `en.md`; recorded here for cross-reference.** The condensed-`ja.md` gap noted in the prior entry has now been **closed**: `ja.md` was completed to 1:1 with `en.md` (§3.2 13-seat table + WS subgraph, §3.3 amendment-process example, §4.1 Authorized/Degraded gloss, §4.3 dual-mode paragraphs + state-update node, §5.2 3-state table, §5.4 cross-layer subgraph + bidirectional-evaluation paragraph, §6.1/§6.2 game bullets, §6.4 closing sentence, §8/§9.5 fuller mermaid, §10.2–§10.4 mitigation paragraphs). `ja.md` prose `;`/`:` separators were also Japanese-ified per Telos direction. `en.md` itself is unchanged by this pass. |
 
 ---
 

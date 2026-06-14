@@ -394,19 +394,27 @@ setup_cursor_global() {
     ensure_knowledge
     mkdir -p "$CURSOR_DIR"
 
-    copy_dir "$REPO_DIR/agents" "$CURSOR_DIR/agents" "agents"
+    # Agents: SYMLINK (NOT copy — copies go stale when global agent defs change, e.g. the
+    # sovereign term-of-address rename — the former "Founder" placeholder → "Telos" — that
+    # failed to propagate to copied agents 2026-06-13). Symlink gives
+    # instant propagation across all workspaces, same as rules/knowledge. (Tier-0 change, Telos-
+    # approved 2026-06-13.) Workspace-specific agent extensions, if ever needed, go in a separate
+    # real dir (.cursor/agents-local/) — never by editing the linked global set.
+    link_dir "$REPO_DIR/agents" "$CURSOR_DIR/agents" "agents"
 
     link_dir "$ARCHE_STATE_DIR/knowledge" "$CURSOR_DIR/knowledge" "knowledge"
     ln -sfn "$ARCHE_STATE_DIR/governance.md" "$CURSOR_DIR/governance.md"
 
     mkdir -p "$CURSOR_DIR/rules"
+    # Symlink global law/regulation as .mdc (NOT copy — copies go stale when global
+    # amends; symlink gives instant propagation across all workspaces). Reg 14.1.
     for rule in "$REPO_DIR"/rules/*.md; do
         [ -f "$rule" ] || continue
         local base
         base="$(basename "$rule" .md)"
-        cp "$rule" "$CURSOR_DIR/rules/${base}.mdc"
+        ln -sfn "$rule" "$CURSOR_DIR/rules/${base}.mdc"
     done
-    log "Copied rules (.md → .mdc) → $CURSOR_DIR/rules/"
+    log "Linked rules (.md → .mdc symlink, instant propagation) → $CURSOR_DIR/rules/"
 
     log "Cursor global setup complete"
 }
@@ -414,21 +422,74 @@ setup_cursor_global() {
 setup_cursor_workspace() {
     info "Setting up Cursor workspace → .cursor/"
 
-    copy_dir "$REPO_DIR/agents" ".cursor/agents" "agents"
+    # Agents: SYMLINK to global (instant propagation, never copy — Reg 14.1, Tier-0 Telos-approved
+    # 2026-06-13; closes the copied-agents staleness gap). Workspace-specific agents (if needed) go
+    # in a separate real .cursor/agents-local/ dir, never by editing the linked global set.
+    link_dir "$REPO_DIR/agents" ".cursor/agents" "agents"
 
     mkdir -p ".cursor/rules"
+    # Global law/regulation: SYMLINK (instant propagation, never copy — Reg 14.1).
     for rule in "$REPO_DIR"/rules/*.md; do
         [ -f "$rule" ] || continue
         local base
         base="$(basename "$rule" .md)"
-        cp "$rule" ".cursor/rules/${base}.mdc"
+        ln -sfn "$rule" ".cursor/rules/${base}.mdc"
     done
-    log "Copied rules (.md → .mdc) → .cursor/rules/"
+    log "Linked global rules (symlink) → .cursor/rules/"
+
+    # Workspace law/regulation: REAL per-workspace scaffold files (Reg 14). Only
+    # created if absent — never overwrite an existing materialized/split file.
+    scaffold_workspace_law ".cursor/rules"
 
     ensure_local_dir ".cursor/knowledge" "knowledge (workspace-local)"
 
-    info "NOTE: .cursor/rules/*.mdc from arche are generic. Add project-specific rules separately."
+    info "NOTE: workspace-law.mdc / workspace-regulation.mdc are scaffolds. Populate per Regulation 14 + the materialize-workspace-law skill (placement criteria, Global Anchors, Coherence conformance-check)."
     log "Cursor workspace setup complete"
+}
+
+# Scaffold the two real workspace-tier files (Reg 14.1/14.3) into the given rules dir.
+# Idempotent: never overwrites existing files (preserves a materialized split).
+scaffold_workspace_law() {
+    local rules_dir="$1"
+    if [ ! -f "$rules_dir/workspace-law.mdc" ]; then
+        cat > "$rules_dir/workspace-law.mdc" <<'WSLAW'
+---
+description: Workspace Law — workspace-scoped INVARIANTS (forbidden deps, SDK/runtime mandates, architectural invariants, branch discipline). Subordinate to global law/regulation (Law Article 2.1).
+alwaysApply: true
+---
+Tier: Workspace Law | Amendment: Polemarch + Constitution+Coherence conformance gate + Telos (Law Article 2.1)
+> Procedures live in workspace-regulation.mdc. This file holds invariants only.
+> Workspace law may only SPECIALIZE/TIGHTEN global rules, never contradict/relax (Article 2.1; conflicting clauses void ab initio).
+
+## Global Anchors
+# For each invariant below, name the global Article/Regulation it specializes,
+# OR declare it an originating-workspace invariant (no global anchor).
+# (none yet — populate when invariants are added)
+
+# Add workspace invariants below, each traceable to a Global Anchor entry.
+WSLAW
+        log "Scaffolded workspace-law.mdc → $rules_dir/"
+    else
+        info "workspace-law.mdc exists — preserved (not overwritten)"
+    fi
+    if [ ! -f "$rules_dir/workspace-regulation.mdc" ]; then
+        cat > "$rules_dir/workspace-regulation.mdc" <<'WSREG'
+---
+description: Workspace Regulation — workspace-scoped PROCEDURES (build commands, deploy steps, boot order, runbook duties, tone). Subordinate to global law/regulation.
+alwaysApply: true
+---
+Tier: Workspace Regulation | Amendment: Polemarch, audited by Thesmothete
+> Invariants live in workspace-law.mdc.
+
+## Session boot order
+# 1. Read workspace-law.mdc (invariants), 2. Read workspace-regulation.mdc (procedures), then project runbook/plans/knowledge.
+
+# Add workspace procedures below.
+WSREG
+        log "Scaffolded workspace-regulation.mdc → $rules_dir/"
+    else
+        info "workspace-regulation.mdc exists — preserved (not overwritten)"
+    fi
 }
 
 setup_cursor_smart() {
@@ -489,7 +550,7 @@ Governance Report:
 
 **Failure to complete this initialization means ALL work in this session will be recorded as UNAUDITED and governance violations will accumulate.**
 
-DO NOT skip this to "save time" or "be helpful." The Founder expects governance compliance FIRST.
+DO NOT skip this to "save time" or "be helpful." Telos expects governance compliance FIRST.
 
 ## Structure
 
@@ -585,7 +646,7 @@ Governance Report:
 
 **Failure to complete this initialization means ALL work in this session will be recorded as UNAUDITED and governance violations will accumulate.**
 
-DO NOT skip this to "save time" or "be helpful." The Founder expects governance compliance FIRST.
+DO NOT skip this to "save time" or "be helpful." Telos expects governance compliance FIRST.
 Proceed with work ONLY after Governance Report has been output.
 
 ## Structure

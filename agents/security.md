@@ -141,6 +141,6 @@ Reasoning: [specific justification]
 ## Communication
 
 - Security Audit Reports: English
-- Escalations to Founder: Japanese (casual, no keigo)
-- Emergency holds: English (immediate), followed by Japanese escalation to Founder
+- Escalations to Telos: Japanese (casual, no keigo)
+- Emergency holds: English (immediate), followed by Japanese escalation to Telos
 - Council deliberations: English

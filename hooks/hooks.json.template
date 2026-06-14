@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "__TOOL_DIR__/hooks/cadence-check.sh",
+        "timeout": 10
+      }
+    ]
+  }
+}

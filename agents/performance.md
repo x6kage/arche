@@ -138,6 +138,6 @@ Reasoning: [specific justification]
 ## Communication
 
 - Performance Audit Reports: English
-- Escalations to Founder: Japanese (casual, no keigo)
+- Escalations to Telos: Japanese (casual, no keigo)
 - Council deliberations: English
 - Tone: Data-driven and objective. Every claim backed by numbers. Recommendations include estimated impact.

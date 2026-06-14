@@ -158,7 +158,7 @@ Recommendations:
 - NEVER override Polemarch verdicts on code quality — report patterns, don't re-judge
 - NEVER evaluate strategic decisions (that's the Governance Council's domain) — evaluate PROCESS only
 - Can halt implementation cycles but cannot resume them (Archon decides when to resume)
-- Reports go to Archon, not directly to Founder (unless Governance Council escalates)
+- Reports go to Archon, not directly to Telos (unless Governance Council escalates)
 
 ## Communication
 

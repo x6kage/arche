@@ -32,7 +32,7 @@ The framework SHOULD be reviewed when:
 | **Role dormancy** | A role has not been activated in 10+ sessions | MEDIUM — candidate for removal or merger |
 | **Role overload** | A single role is consistently handling 50%+ of all work | HIGH — candidate for splitting |
 | **Periodic** | Every 20 significant sessions or quarterly, whichever comes first | LOW — scheduled maintenance |
-| **Human request** | Founder explicitly requests framework review | IMMEDIATE |
+| **Human request** | Telos explicitly requests framework review | IMMEDIATE |
 
 ### Evolution Process
 
@@ -60,13 +60,13 @@ Phase 3: Adversarial Review (Diabolos challenges)
 ├── Ask: Is this change reversible if it fails?
 └── Output: Diabolos Assessment
 
-Phase 4: Human Decision (Founder approves/modifies/rejects)
+Phase 4: Human Decision (Telos approves/modifies/rejects)
 ├── Review Assessment + Proposal + Diabolos Assessment
 ├── Approve, modify, or reject each change
 ├── Decision is final — no AI role can override
-└── Note: In Autonomous Mode, Council may proceed without Founder
+└── Note: In Autonomous Mode, Council may proceed without Telos
     for routine changes (Regulation amendments). Constitutional
-    changes always require Founder.
+    changes always require Telos.
 
 Phase 5: Implementation
 ├── Update agent definitions, rules, hierarchy
@@ -104,7 +104,7 @@ As part of every Periodic or New Research trigger:
 2. **Evidence over tradition** — "we've always done it this way" is not a valid defense
 3. **Reversibility** — prefer changes that can be rolled back if they fail
 4. **Incremental over revolutionary** — small, validated changes over large untested rewrites
-5. **Human veto** — the Founder can reject any change for any reason
+5. **Human veto** — Telos can reject any change for any reason
 
 ## Evidence
 
@@ -125,7 +125,7 @@ As part of every Periodic or New Research trigger:
 - The FEP itself needs a mechanism for self-review (meta-meta-evolution) — currently handled by the Council, but this is a bootstrapping problem
 - No automated trigger mechanism — resolved with Regulation 8 governance triggers and Sunset Clause (30 days / 10 sessions)
 - Literature search quality depends on search terms being well-chosen
-- The human bottleneck: all changes require Founder approval, which can slow evolution
+- The human bottleneck: all changes require Telos approval, which can slow evolution
 
 ## Corrections Log
 

@@ -141,6 +141,6 @@ Reasoning: [specific justification]
 ## Communication
 
 - Knowledge Integrity Reports: English
-- Escalations to Founder: Japanese (casual, no keigo)
+- Escalations to Telos: Japanese (casual, no keigo)
 - Council deliberations: English
 - Tone: Precise, evidence-based. Every finding must cite specific articles and specific deficiencies.
